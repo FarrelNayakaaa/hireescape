@@ -8,11 +8,13 @@ export function RoomIntroCard({ room, title, goal, skipLabel, continueLabel, onD
   room: Room; title: string; goal: string; skipLabel: string; continueLabel: string; onDismiss(): void;
 }) {
   const dismissed = useRef(false);
+  const onDismissRef = useRef(onDismiss);
+  useEffect(() => { onDismissRef.current = onDismiss; }, [onDismiss]);
   const dismiss = useCallback(() => {
     if (dismissed.current) return;
     dismissed.current = true;
-    onDismiss();
-  }, [onDismiss]);
+    onDismissRef.current();
+  }, []);
   useEffect(() => {
     const timer = setTimeout(dismiss, 1500);
     const onKey = () => dismiss();

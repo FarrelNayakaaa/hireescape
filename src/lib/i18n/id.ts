@@ -1,4 +1,28 @@
 import type { TranslationKey } from "./en";
-
-// B7 supplies Indonesian translations; missing entries deliberately use English.
-export const id: Partial<Record<TranslationKey, string>> = {};
+export const id: Record<TranslationKey, string> = {
+  inquisitorEnough: "Inquisitor telah memiliki cukup informasi untuk saat ini", inquisitorThinking: "Inquisitor sedang berpikir…", inquisitorAsk: "Ajukan pertanyaan berdasarkan kode Anda", defenceAbove: "Pertanyaan pembelaan tersedia di atas.",
+  signalsTitle: "Sinyal yang terkumpul", signalsTooltip: "Sinyal merupakan bukti bagi peninjau manusia, bukan skor.", signalNotice: "+1 sinyal {axis}",
+  debugging: "Debugging", design: "Desain", communication: "Komunikasi", ai_supervision: "Pengawasan AI", notAssessed: "Tidak dinilai",
+  downloadSession: "Unduh JSON sesi", exportError: "Sesi belum berhasil diekspor. Silakan coba lagi.",
+  loading: "Membuka asesmen Anda…", unavailableTitle: "Asesmen ini belum siap dibuka", unavailableBody: "Hubungi orang yang membagikan tautan asesmen ini.",
+  notFoundTitle: "Asesmen tidak ditemukan", notFoundBody: "Periksa tautan Anda atau kembali ke dasbor pengelola.", errorTitle: "Asesmen tidak dapat dibuka", errorBody: "Silakan coba lagi. Sesi yang tersimpan tetap ada di peramban ini.",
+  backToManager: "Kembali ke pengelola", retry: "Coba lagi", laptopNotice: "Gunakan laptop atau komputer desktop untuk asesmen ini.",
+  rulesTitle: "Sebelum Anda masuk", humanReview: "Sesi Anda ditinjau manusia. Tidak ada penolakan otomatis.", inquisitorRule: "Inquisitor akan bertanya tentang kode Anda sendiri. Ia tidak memberikan jawaban.",
+  aiOnRule: "Anda boleh memakai asisten bawaan. Kami mengamati cara Anda menggunakannya, bukan apakah Anda memakainya.", aiOffRule: "Asisten bawaan dinonaktifkan untuk asesmen ini. Kerjakan tanpa alat AI.",
+  browserSignals: "Pemeriksaan aktivitas peramban diatur untuk asesmen ini.", mediaSignals: "Pemeriksaan kamera dan mikrofon memerlukan persetujuan Anda sebelum digunakan.",
+  understand: "Saya mengerti", start: "Mulai asesmen", acknowledgeFirst: "Baca aturan dan centang “Saya mengerti” untuk memulai.", minutesAvailable: "Waktu tersedia: {minutes} menit",
+  room1Name: "Triase", room2Name: "Bug", room3Name: "Pembelaan solusi", room1Goal: "Temukan bagian yang bermasalah.", room2Goal: "Buat semua pengujian tersembunyi berhasil.", room3Goal: "Jelaskan perbaikan dengan kata-kata Anda sendiri.",
+  locked: "Terkunci", active: "Aktif", escaped: "Selesai", roomProgress: "Progres ruangan", keys: "Kunci diperoleh: {count}/3", earnedKey: "Kunci diperoleh", lockedKey: "Kunci belum diperoleh",
+  timerLabel: "Waktu tersisa", tenMinutes: "Sisa waktu 10 menit", twoMinutes: "Sisa waktu 2 menit", aiOn: "Bantuan AI: AKTIF", aiOff: "Bantuan AI: NONAKTIF",
+  brief: "Ringkasan", tests: "Pengujian", inquisitor: "Inquisitor", assistant: "Asisten", incident: "Tiket insiden", noBrief: "Ringkasan insiden belum tersedia.",
+  testsEmpty: "Jalankan pengujian untuk melihat hasil", testStatus: "{name} — {status}", testCounts: "{passed}/{total} pengujian {suite} berhasil", visibleSuite: "terbuka", hiddenSuite: "tersembunyi", pass: "berhasil", fail: "belum berhasil", error: "galat", running: "Menjalankan…",
+  testTimeout: "Pengujian kehabisan waktu. Periksa perulangan tanpa akhir atau promise yang belum selesai.", hiddenRuntime: "Pengujian tersembunyi belum dapat diselesaikan. Periksa kode Anda lalu jalankan lagi.", hiddenPending: "Pengujian tersembunyi belum dijalankan.", vaultOpen: "Pintu terbuka",
+  agentsComing: "Panel ini akan tersedia segera.", aiDisabled: "Nonaktif untuk asesmen ini", aiRoom1: "Terbuka di Ruang 2 — triase adalah bagian Anda", aiRoom3: "Pembelaan disampaikan dengan kata-kata Anda sendiri", inquisitorRoom1: "Pertanyaan dimulai di Ruang 2.",
+  nextRoom: "Ruangan berikutnya →", continueRoom2: "Lanjut ke Ruang 2", enterRoom3: "Masuk Ruang 3", completeRoomFirst: "Selesaikan ruangan ini untuk membuka ruangan berikutnya.", navigationDeferred: "Ruangan berikutnya belum tersedia.", noGoingBack: "Ruangan yang selesai tetap tersedia dalam riwayat sesi.",
+  editorLoading: "Memuat editor kode…", editorUnavailable: "Editor kode belum dapat dimuat. Silakan coba lagi.", editorLabel: "Editor kode tantangan", editorEmpty: "Kode sesi belum tersedia.", dismissIntro: "Lanjut", skipIntro: "Tekan tombol apa pun untuk melanjutkan", startError: "Sesi belum dapat dimulai. Silakan coba lagi.",
+  runTests: "Jalankan pengujian", check: "Tanya ✦", checkDeferred: "Pertanyaan tersedia dalam pembaruan berikutnya.", codeSealed: "Kode Ruang 2 telah dikunci untuk pembelaan.", recordedResults: "Hasil tersimpan — jalankan lagi untuk memperbarui rincian pengujian.",
+  testExecutionError: "Pengujian belum dapat selesai. Silakan jalankan lagi.", testsChanged: "Kode Anda berubah sejak hasil ini. Jalankan pengujian lagi untuk memeriksanya.", defencePending: "Ruang 3 terbuka. Pertanyaan pembelaan tersedia dalam pembaruan berikutnya.",
+  sessionEscaped: "Anda berhasil keluar", sessionTimeout: "Waktu habis — pekerjaan Anda tersimpan.", sessionEnded: "Sesi ini telah berakhir", sessionSaved: "Sesi Anda tersimpan di peramban ini untuk ditinjau manusia.",
+  triageTitle: "Tandai jalur kegagalan", triageInstructions: "Klik tepi nomor baris atau tekan M pada baris untuk menandai rentang.", triageRange: "Baris terpilih {start}–{end}", triageSelect: "Pilih rentang baris yang Anda curigai.", hypothesis: "Hipotesis Anda", submitTriage: "Kirim triase", triageRequirements: "Pilih satu hingga delapan baris dan jelaskan hipotesis Anda dengan sedikitnya lima belas karakter.", triageHint: "{hint}",
+  preparingQuestion: "Inquisitor sedang menyiapkan pertanyaan pertama Anda…", defenceAnswer: "Jawaban Anda", answerMinimum: "Gunakan sedikitnya tiga puluh karakter.", answerLong: "Jawaban ringkas lebih mudah ditinjau; Anda tetap dapat mengirim jawaban ini.", submitAnswer: "Kirim jawaban", viewDiff: "Lihat perbedaan", viewCode: "Lihat kode", enteringRoom: "Membuka ruangan berikutnya…", timeoutThanks: "Waktu habis — pekerjaan Anda sejauh ini telah dikirim. Terima kasih.", escapedTime: "Anda keluar dalam {time}", escapedThanks: "Sesi Anda telah dikirim kepada peninjau manusia. Terima kasih.", savingFinal: "Menyimpan hasil pengujian terakhir…",
+};
