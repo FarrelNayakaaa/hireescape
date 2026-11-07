@@ -38,6 +38,6 @@ export function RoomHall({ availableRoom, completedRooms, copy, onEnter }: {
         <span className="he-door-caption"><span className="he-door-title">{copy.names[room - 1]}</span><span className="he-small he-muted">{copy.goals[room - 1]}</span><span id={`he-hall-door-${room}-status`} className="he-door-state"><Icon size={16} aria-hidden="true" />{complete ? copy.complete : available ? copy.enter : copy.locked}{complete && <Check size={14} aria-hidden="true" />}</span></span>
       </motion.button>;
     })}</div>
-    {opening && <DoorOpenTransition label={`${copy.entering} ${copy.names[opening - 1]}`} onComplete={() => onEnter(opening)} />}
+    {opening && <DoorOpenTransition room={opening} keyEarned={false} label={`${copy.entering} ${copy.names[opening - 1]}`} onComplete={() => onEnter(opening)} />}
   </section>;
 }

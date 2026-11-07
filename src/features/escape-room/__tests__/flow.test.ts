@@ -51,3 +51,14 @@ describe("event-derived flow", () => {
     expect(initialRoomUiState.dismissedIntros).toEqual([]);
   });
 });
+
+it.each([
+  { phase: "rules", events: [] },
+  { phase: "room1", events: started },
+  { phase: "room2", events: [...started, event("room_complete", { room: 1 })] },
+  { phase: "room3", events: [...started, event("room_complete", { room: 1 }), event("room_complete", { room: 2 }), event("room_enter", { room: 3 })] },
+  { phase: "escaped", events: [...started, event("session_end", { reason: "escaped" })] },
+  { phase: "timeout", events: [...started, event("session_end", { reason: "timeout" })] },
+])("restores $phase after a storage round trip", ({ phase, events }) => {
+  expect(deriveFlow(JSON.parse(JSON.stringify(events)), assessment, { startedAt: assessment.createdAt }).phase).toBe(phase);
+});

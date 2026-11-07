@@ -1,4 +1,10 @@
 export const en = {
+  inquisitorEnough: "The Inquisitor has enough for now", inquisitorThinking: "Inquisitor is thinking…", inquisitorAsk: "Ask a grounded question about your code", defenceAbove: "Defence questions appear above.",
+  signalsTitle: "Signals captured",
+  signalsTooltip: "Signals are evidence collected for a human reviewer, not a score.",
+  signalNotice: "+1 {axis} signal",
+  debugging: "Debugging", design: "Design", communication: "Communication", ai_supervision: "AI supervision",
+  notAssessed: "Not assessed", downloadSession: "Download session JSON", exportError: "Session export could not finish. Please try again.",
   loading: "Opening your assessment…",
   unavailableTitle: "This assessment is not ready to open",
   unavailableBody: "Please contact the person who shared your assessment link.",
