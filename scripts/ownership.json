@@ -9,7 +9,11 @@
     "CODEX_LOG.md",
     "README.md",
     "AGENTS.md",
-    "ARCHITECTURE.md"
+    "ARCHITECTURE.md",
+    "agents.md",
+    "architecture.md",
+    "readme.md",
+    "codex_log.md"
   ],
   "devs": {
     "A": {
@@ -53,7 +57,9 @@
         "src/features/assessment/**",
         "src/features/analyst/**",
         "src/features/report/**",
-        "challenges/**"
+        "challenges/**",
+        "src/app/agents.md",
+        "src/app/app.md"
       ],
       "deny": [
         "src/lib/codex/prompts/inquisitor.ts",
