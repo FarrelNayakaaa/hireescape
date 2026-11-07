@@ -3,6 +3,7 @@
 import { loader } from "@monaco-editor/react";
 import * as monaco from "monaco-editor/editor/editor.api";
 import "monaco-editor/languages/definitions/javascript/register";
+import "monaco-editor/editor/contrib/toggleTabFocusMode/browser/toggleTabFocusMode";
 
 let configured = false;
 

@@ -32,7 +32,7 @@ export const useIntegrityStore = create<IntegrityState>()(persist((set, get) => 
   records: {}, preparations: {}, pending: {},
   prepare(input) { const value = preparationSchema.parse(input); set((state) => ({ preparations: { ...state.preparations, [value.assessmentId]: value } })); },
   begin(id, startedAt, aiAssistance, preparation) {
-    if (get().records[id]) { if (get().pending[id]) live.set(id, [...get().pending[id].samples]); return; }
+    if (get().records[id]) { if (get().pending[id] && !live.has(id)) live.set(id, [...get().pending[id].samples]); return; }
     const record: IntegrityRecord = { sessionId: id, mode: preparation.mode, consent: preparation.consent, ...(preparation.consentAt ? { consentAt: preparation.consentAt } : {}), calibration: preparation.calibration, signals: [], summary: summarizeIntegrity([], { aiAssistance }) };
     live.set(id, []);
     set((state) => ({ records: { ...state.records, [id]: record }, pending: { ...state.pending, [id]: { startedAt, aiAssistance, faceSignalsEnabled: preparation.mode === "camera_mic" && preparation.calibration.faceOk === true, samples: [], snapshots: {} } } }));

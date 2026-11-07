@@ -14,7 +14,7 @@ const LocalEditor = dynamic(() => import("./MonacoEditor").then((module) => modu
   ssr: false,
   loading: EditorLoading,
 });
-const LocalDiff = dynamic(() => import("./MonacoEditor").then((module) => module.MonacoDiff), { ssr: false });
+const LocalDiff = dynamic(() => import("./MonacoEditor").then((module) => module.MonacoDiff), { ssr: false, loading: EditorLoading });
 
 export function EditorPane({ sessionId, readOnly = false, locale = "en", markedRange = null, revealRange = null, onMarkLine, showDiff = false, starterCode = "", onReady }: {
   sessionId: string; readOnly?: boolean; locale?: AssessmentConfig["locale"]; markedRange?: MarkedRange | null; revealRange?: MarkedRange | null;
@@ -23,11 +23,12 @@ export function EditorPane({ sessionId, readOnly = false, locale = "en", markedR
   const session = useSessionStore((state) => state.sessions[sessionId]);
   const recorder = useEditorRecorder(sessionId);
   if (!session) return <p className="p-6 text-he-muted">{t(locale, "editorEmpty")}</p>;
-  return <section aria-label={t(locale, "editorLabel")} className="h-[65vh] min-h-96 min-w-0 bg-he-surface">
-    <EditorLocale value={locale}><EditorErrorBoundary key={sessionId} locale={locale}>
+  return <section aria-label={t(locale, "editorLabel")} className="flex h-[65vh] min-h-96 min-w-0 flex-col bg-he-surface">
+    <p className="shrink-0 px-3 text-xs text-he-muted">{t(locale, "editorKeyboard")}</p>
+    <div className="min-h-0 flex-1"><EditorLocale value={locale}><EditorErrorBoundary key={sessionId} locale={locale}>
       {showDiff ? <LocalDiff original={starterCode} modified={session.finalCode} locale={locale} /> : <LocalEditor code={session.finalCode}
         onMount={(instance, monaco) => { recorder.handleMount(instance, monaco); onReady?.(recorder); }} readOnly={readOnly} locale={locale}
         markedRange={markedRange} revealRange={revealRange} onMarkLine={onMarkLine} />}
-    </EditorErrorBoundary></EditorLocale>
+    </EditorErrorBoundary></EditorLocale></div>
   </section>;
 }

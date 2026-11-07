@@ -5,6 +5,7 @@ const mocks = vi.hoisted(() => ({ config: vi.fn(), defineTheme: vi.fn() }));
 vi.mock("@monaco-editor/react", () => ({ loader: { config: mocks.config } }));
 vi.mock("monaco-editor/editor/editor.api", () => ({ editor: { defineTheme: mocks.defineTheme } }));
 vi.mock("monaco-editor/languages/definitions/javascript/register", () => ({}));
+vi.mock("monaco-editor/editor/contrib/toggleTabFocusMode/browser/toggleTabFocusMode", () => ({}));
 afterEach(() => { vi.unstubAllGlobals(); vi.resetModules(); vi.clearAllMocks(); });
 
 it("configures local Monaco once, with a bundled worker and theme tokens", async () => {

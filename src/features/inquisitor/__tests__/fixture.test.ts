@@ -23,3 +23,15 @@ it("parses all four templates, fills line/quote per request, and has distinct de
   expect(mockQuestion({ ...input, currentCode: changed }).groundedIn).toEqual({ line: 2, quote: "const item = await service.load();" });
   expect(mockQuestion({ ...input, currentCode: "module.exports = service;" }).groundedIn.line).toBe(1);
 });
+it("grounds Indonesian mock and fallback questions and keeps revisions distinct", () => {
+  const recentQA: { q: string; a: string | null }[] = [];
+  for (const defenceIndex of [0, 1, 2]) {
+    const question = mockQuestion({ ...input, locale: "id", mode: "defence", defenceIndex, recentQA });
+    expect(validateQuestion(question, input.currentCode, recentQA)).toEqual([]);
+    expect(question.question).not.toBe(mockQuestion({ ...input, mode: "defence", defenceIndex }).question);
+    expect(validateQuestion(fallbackQuestion(input.currentCode, defenceIndex, "id"), input.currentCode, [])).toEqual([]);
+    recentQA.push({ q: question.question, a: "Saya menjelaskan perilaku dependensi." });
+  }
+  const first = mockQuestion({ ...input, locale: "id" });
+  expect(validateQuestion(mockQuestion({ ...input, locale: "id", recentQA: [{ q: first.question, a: null }] }), input.currentCode, [{ q: first.question }])).toEqual([]);
+});
