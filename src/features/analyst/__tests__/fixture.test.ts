@@ -1,0 +1,10 @@
+import { expect, it } from "vitest";
+import fixture from "@/lib/codex/fixtures/analyst.json";
+import { AnalystOutput, AnalystRequest } from "../schema";
+import { verifyClaims } from "../lib/verifyClaims";
+import { computeObjectiveMetrics } from "../lib/metrics";
+import { buildAnalysisRequest } from "../lib/buildRequest";
+import { challenge, fixtureSession, secret } from "./fixtures";
+it("keeps eight good fixture claims and drops exactly the fabricated evidence",()=>{const parsed=AnalystOutput.parse(fixture);const session=fixtureSession();const verified=verifyClaims(parsed.claims,session,computeObjectiveMetrics(session,challenge));expect(verified.droppedClaims).toBe(1);expect(verified.claims).toHaveLength(8);expect(JSON.stringify(verified)).not.toContain("CIRCUIT_BREAKER_EVIDENCE");});
+it.each(["integrity","signals","snapshots","camera","microphone"])("rejects unknown request key %s",key=>{const request=buildAnalysisRequest(fixtureSession(),challenge,secret);expect(AnalystRequest.safeParse({...request,[key]:"private"}).success).toBe(false);});
+it("requires every model output field, including nullable evidence locations",()=>{const evidence={kind:"event",eventId:"e3",quote:"cache"};expect(AnalystOutput.safeParse({...fixture,claims:[{...fixture.claims[0],evidence:[evidence]}]}).success).toBe(false);});
