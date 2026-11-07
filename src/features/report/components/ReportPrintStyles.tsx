@@ -12,10 +12,10 @@ export function ReportPrintStyles(){return <style>{`
  .he-report h3 { font-size: 10pt !important; }
  .he-report p { margin-top: 1mm !important; margin-bottom: 1mm !important; }
  .he-report .he-card { box-shadow: none !important; background: white !important; color: black !important; padding: 2mm !important; break-inside: avoid; margin-top: 2mm !important; }
- .he-report .he-card-bar { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+ .he-report .he-card-bar { background: none !important; height: 0 !important; border-top: 1mm solid var(--he-blue) !important; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
  .he-report .he-chip { color: black !important; background: none !important; border: none !important; padding: 0 !important; box-shadow: none !important; font-size: 8pt !important; }
  .he-report [data-evidence] button { display: inline !important; }
- .he-report .he-number-badge { width: 7mm; height: 7mm; font-size: 9pt; }
+ .he-report .he-number-badge { width: 7mm; height: 7mm; font-size: 9pt; color: var(--he-blue) !important; border-color: var(--he-blue) !important; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
  .he-report [data-report-objective] { display: grid !important; grid-template-columns: repeat(4,1fr) !important; gap: 2mm !important; }
  .he-report [data-report-competency] { display: grid !important; grid-template-columns: repeat(4,1fr) !important; gap: 2mm !important; }
  .he-report [data-report-claims] { display: grid !important; grid-template-columns: repeat(2,minmax(0,1fr)) !important; gap: 3mm !important; }
