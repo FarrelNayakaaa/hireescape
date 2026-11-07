@@ -1,0 +1,460 @@
+{
+  "id": "e1b83a6e-aa30-4410-bb6d-2f7cb9c47b05",
+  "assessmentId": "ad8272cb-a539-4061-b7bc-c13bdfc8bf5a",
+  "challengeId": "seed-cache-no-fallback-mid",
+  "aiAssistance": true,
+  "startedAt": "2026-11-07T07:20:53.027Z",
+  "events": [
+    {
+      "id": "e1",
+      "t": 1,
+      "room": 0,
+      "type": "session_start",
+      "data": {
+        "aiAssistance": true,
+        "level": "mid",
+        "defectType": "cache_no_fallback"
+      }
+    },
+    {
+      "id": "e2",
+      "t": 3,
+      "room": 0,
+      "type": "rules_ack",
+      "data": {}
+    },
+    {
+      "id": "e3",
+      "t": 3,
+      "room": 1,
+      "type": "room_enter",
+      "data": {
+        "room": 1
+      }
+    },
+    {
+      "id": "e4",
+      "t": 471,
+      "room": 1,
+      "type": "triage_mark",
+      "text": "The downstream dependency may fail without an alternative path.",
+      "data": {
+        "start": 1,
+        "end": 1
+      }
+    },
+    {
+      "id": "e5",
+      "t": 472,
+      "room": 1,
+      "type": "triage_result",
+      "data": {
+        "correct": false,
+        "assisted": false,
+        "attempt": 1
+      }
+    },
+    {
+      "id": "e6",
+      "t": 627,
+      "room": 1,
+      "type": "triage_mark",
+      "text": "The downstream dependency may fail without an alternative path.",
+      "data": {
+        "start": 1,
+        "end": 1
+      }
+    },
+    {
+      "id": "e7",
+      "t": 627,
+      "room": 1,
+      "type": "triage_result",
+      "data": {
+        "correct": false,
+        "assisted": false,
+        "attempt": 2
+      }
+    },
+    {
+      "id": "e8",
+      "t": 784,
+      "room": 1,
+      "type": "triage_mark",
+      "text": "The downstream dependency may fail without an alternative path.",
+      "data": {
+        "start": 1,
+        "end": 1
+      }
+    },
+    {
+      "id": "e9",
+      "t": 785,
+      "room": 1,
+      "type": "triage_result",
+      "data": {
+        "correct": false,
+        "assisted": true,
+        "attempt": 3
+      }
+    },
+    {
+      "id": "e10",
+      "t": 785,
+      "room": 1,
+      "type": "room_complete",
+      "data": {
+        "room": 1,
+        "durationSec": 0.782
+      }
+    },
+    {
+      "id": "e11",
+      "t": 1301,
+      "room": 2,
+      "type": "room_enter",
+      "data": {
+        "room": 2
+      }
+    },
+    {
+      "id": "e12",
+      "t": 2158,
+      "room": 2,
+      "type": "inquisitor_question",
+      "text": "For revision 1 of this operation on line 14, what assumption could change its outcome?",
+      "data": {
+        "mode": "nudge",
+        "intent": "probe_reasoning",
+        "line": 14,
+        "quote": "const cached = await cache.get(cacheKey(id));",
+        "defenceIndex": null
+      }
+    },
+    {
+      "id": "e13",
+      "t": 2245,
+      "room": 2,
+      "type": "paste",
+      "data": {
+        "chars": 895,
+        "lines": 41,
+        "matchesSuggestionId": null
+      }
+    },
+    {
+      "id": "e14",
+      "t": 2286,
+      "room": 2,
+      "type": "test_run",
+      "data": {
+        "visible": {
+          "passed": 2,
+          "total": 2
+        },
+        "hidden": {
+          "passed": 6,
+          "total": 6,
+          "failedNames": []
+        },
+        "timedOut": false,
+        "runtimeError": null,
+        "codeHash": "58d8265d"
+      }
+    },
+    {
+      "id": "e15",
+      "t": 2287,
+      "room": 2,
+      "type": "room_complete",
+      "data": {
+        "room": 2,
+        "durationSec": 0.986
+      }
+    },
+    {
+      "id": "e16",
+      "t": 2430,
+      "room": 3,
+      "type": "room_enter",
+      "data": {
+        "room": 3
+      }
+    },
+    {
+      "id": "e17",
+      "t": 3428,
+      "room": 3,
+      "type": "inquisitor_question",
+      "text": "What failure could propagate from the operation on line 16 under sustained load?",
+      "data": {
+        "mode": "defence",
+        "intent": "failure_mode",
+        "line": 16,
+        "quote": "cached = await cache.get(cacheKey(id));",
+        "defenceIndex": 0
+      }
+    },
+    {
+      "id": "e18",
+      "t": 3747,
+      "room": 3,
+      "type": "edit",
+      "data": {
+        "linesChanged": 13,
+        "source": "paste"
+      }
+    },
+    {
+      "id": "e19",
+      "t": 3849,
+      "room": 3,
+      "type": "candidate_answer",
+      "text": "I preserve database failures while tolerating cache outages, and use dependency-specific logs to distinguish capacity and availability.",
+      "data": {
+        "questionEventId": "e17"
+      }
+    },
+    {
+      "id": "e20",
+      "t": 4601,
+      "room": 3,
+      "type": "inquisitor_question",
+      "text": "Which operational signal would distinguish a dependency problem at line 16 from an invalid request?",
+      "data": {
+        "mode": "defence",
+        "intent": "observability",
+        "line": 16,
+        "quote": "cached = await cache.get(cacheKey(id));",
+        "defenceIndex": 1
+      }
+    },
+    {
+      "id": "e21",
+      "t": 4631,
+      "room": 3,
+      "type": "candidate_answer",
+      "text": "I preserve database failures while tolerating cache outages, and use dependency-specific logs to distinguish capacity and availability.",
+      "data": {
+        "questionEventId": "e20"
+      }
+    },
+    {
+      "id": "e22",
+      "t": 5714,
+      "room": 3,
+      "type": "inquisitor_question",
+      "text": "What trade-off does the decision on line 16 introduce as traffic grows?",
+      "data": {
+        "mode": "defence",
+        "intent": "tradeoff",
+        "line": 16,
+        "quote": "cached = await cache.get(cacheKey(id));",
+        "defenceIndex": 2
+      }
+    },
+    {
+      "id": "e23",
+      "t": 5736,
+      "room": 3,
+      "type": "candidate_answer",
+      "text": "I preserve database failures while tolerating cache outages, and use dependency-specific logs to distinguish capacity and availability.",
+      "data": {
+        "questionEventId": "e22"
+      }
+    },
+    {
+      "id": "e24",
+      "t": 5736,
+      "room": 3,
+      "type": "room_complete",
+      "data": {
+        "room": 3,
+        "durationSec": 3.306
+      }
+    },
+    {
+      "id": "e25",
+      "t": 5736,
+      "room": 3,
+      "type": "session_end",
+      "data": {
+        "reason": "escaped"
+      }
+    }
+  ],
+  "snapshots": [
+    {
+      "eventId": "e1",
+      "t": 1,
+      "code": "// productService.js\nfunction createProductService({ cache, repo, logger }) {\n  const TTL_SECONDS = 60;\n\n  function cacheKey(id) {\n    return `product:${id}`;\n  }\n\n  async function getProduct(id) {\n    if (!id) {\n      throw new Error(\"id is required\");\n    }\n\n    const cached = await cache.get(cacheKey(id));\n    if (cached) {\n      return { ...cached, source: \"cache\" };\n    }\n\n    const product = await repo.findById(id);\n    if (!product) {\n      return null;\n    }\n\n    await cache.set(cacheKey(id), product, TTL_SECONDS);\n    return { ...product, source: \"db\" };\n  }\n\n  return { getProduct };\n}\n\nmodule.exports = { createProductService };\n"
+    },
+    {
+      "eventId": "e2",
+      "t": 3,
+      "code": "// productService.js\nfunction createProductService({ cache, repo, logger }) {\n  const TTL_SECONDS = 60;\n\n  function cacheKey(id) {\n    return `product:${id}`;\n  }\n\n  async function getProduct(id) {\n    if (!id) {\n      throw new Error(\"id is required\");\n    }\n\n    const cached = await cache.get(cacheKey(id));\n    if (cached) {\n      return { ...cached, source: \"cache\" };\n    }\n\n    const product = await repo.findById(id);\n    if (!product) {\n      return null;\n    }\n\n    await cache.set(cacheKey(id), product, TTL_SECONDS);\n    return { ...product, source: \"db\" };\n  }\n\n  return { getProduct };\n}\n\nmodule.exports = { createProductService };\n"
+    },
+    {
+      "eventId": "e3",
+      "t": 3,
+      "code": "// productService.js\nfunction createProductService({ cache, repo, logger }) {\n  const TTL_SECONDS = 60;\n\n  function cacheKey(id) {\n    return `product:${id}`;\n  }\n\n  async function getProduct(id) {\n    if (!id) {\n      throw new Error(\"id is required\");\n    }\n\n    const cached = await cache.get(cacheKey(id));\n    if (cached) {\n      return { ...cached, source: \"cache\" };\n    }\n\n    const product = await repo.findById(id);\n    if (!product) {\n      return null;\n    }\n\n    await cache.set(cacheKey(id), product, TTL_SECONDS);\n    return { ...product, source: \"db\" };\n  }\n\n  return { getProduct };\n}\n\nmodule.exports = { createProductService };\n"
+    },
+    {
+      "eventId": "e4",
+      "t": 471,
+      "code": "// productService.js\nfunction createProductService({ cache, repo, logger }) {\n  const TTL_SECONDS = 60;\n\n  function cacheKey(id) {\n    return `product:${id}`;\n  }\n\n  async function getProduct(id) {\n    if (!id) {\n      throw new Error(\"id is required\");\n    }\n\n    const cached = await cache.get(cacheKey(id));\n    if (cached) {\n      return { ...cached, source: \"cache\" };\n    }\n\n    const product = await repo.findById(id);\n    if (!product) {\n      return null;\n    }\n\n    await cache.set(cacheKey(id), product, TTL_SECONDS);\n    return { ...product, source: \"db\" };\n  }\n\n  return { getProduct };\n}\n\nmodule.exports = { createProductService };\n"
+    },
+    {
+      "eventId": "e5",
+      "t": 472,
+      "code": "// productService.js\nfunction createProductService({ cache, repo, logger }) {\n  const TTL_SECONDS = 60;\n\n  function cacheKey(id) {\n    return `product:${id}`;\n  }\n\n  async function getProduct(id) {\n    if (!id) {\n      throw new Error(\"id is required\");\n    }\n\n    const cached = await cache.get(cacheKey(id));\n    if (cached) {\n      return { ...cached, source: \"cache\" };\n    }\n\n    const product = await repo.findById(id);\n    if (!product) {\n      return null;\n    }\n\n    await cache.set(cacheKey(id), product, TTL_SECONDS);\n    return { ...product, source: \"db\" };\n  }\n\n  return { getProduct };\n}\n\nmodule.exports = { createProductService };\n"
+    },
+    {
+      "eventId": "e6",
+      "t": 627,
+      "code": "// productService.js\nfunction createProductService({ cache, repo, logger }) {\n  const TTL_SECONDS = 60;\n\n  function cacheKey(id) {\n    return `product:${id}`;\n  }\n\n  async function getProduct(id) {\n    if (!id) {\n      throw new Error(\"id is required\");\n    }\n\n    const cached = await cache.get(cacheKey(id));\n    if (cached) {\n      return { ...cached, source: \"cache\" };\n    }\n\n    const product = await repo.findById(id);\n    if (!product) {\n      return null;\n    }\n\n    await cache.set(cacheKey(id), product, TTL_SECONDS);\n    return { ...product, source: \"db\" };\n  }\n\n  return { getProduct };\n}\n\nmodule.exports = { createProductService };\n"
+    },
+    {
+      "eventId": "e7",
+      "t": 627,
+      "code": "// productService.js\nfunction createProductService({ cache, repo, logger }) {\n  const TTL_SECONDS = 60;\n\n  function cacheKey(id) {\n    return `product:${id}`;\n  }\n\n  async function getProduct(id) {\n    if (!id) {\n      throw new Error(\"id is required\");\n    }\n\n    const cached = await cache.get(cacheKey(id));\n    if (cached) {\n      return { ...cached, source: \"cache\" };\n    }\n\n    const product = await repo.findById(id);\n    if (!product) {\n      return null;\n    }\n\n    await cache.set(cacheKey(id), product, TTL_SECONDS);\n    return { ...product, source: \"db\" };\n  }\n\n  return { getProduct };\n}\n\nmodule.exports = { createProductService };\n"
+    },
+    {
+      "eventId": "e8",
+      "t": 784,
+      "code": "// productService.js\nfunction createProductService({ cache, repo, logger }) {\n  const TTL_SECONDS = 60;\n\n  function cacheKey(id) {\n    return `product:${id}`;\n  }\n\n  async function getProduct(id) {\n    if (!id) {\n      throw new Error(\"id is required\");\n    }\n\n    const cached = await cache.get(cacheKey(id));\n    if (cached) {\n      return { ...cached, source: \"cache\" };\n    }\n\n    const product = await repo.findById(id);\n    if (!product) {\n      return null;\n    }\n\n    await cache.set(cacheKey(id), product, TTL_SECONDS);\n    return { ...product, source: \"db\" };\n  }\n\n  return { getProduct };\n}\n\nmodule.exports = { createProductService };\n"
+    },
+    {
+      "eventId": "e9",
+      "t": 785,
+      "code": "// productService.js\nfunction createProductService({ cache, repo, logger }) {\n  const TTL_SECONDS = 60;\n\n  function cacheKey(id) {\n    return `product:${id}`;\n  }\n\n  async function getProduct(id) {\n    if (!id) {\n      throw new Error(\"id is required\");\n    }\n\n    const cached = await cache.get(cacheKey(id));\n    if (cached) {\n      return { ...cached, source: \"cache\" };\n    }\n\n    const product = await repo.findById(id);\n    if (!product) {\n      return null;\n    }\n\n    await cache.set(cacheKey(id), product, TTL_SECONDS);\n    return { ...product, source: \"db\" };\n  }\n\n  return { getProduct };\n}\n\nmodule.exports = { createProductService };\n"
+    },
+    {
+      "eventId": "e10",
+      "t": 785,
+      "code": "// productService.js\nfunction createProductService({ cache, repo, logger }) {\n  const TTL_SECONDS = 60;\n\n  function cacheKey(id) {\n    return `product:${id}`;\n  }\n\n  async function getProduct(id) {\n    if (!id) {\n      throw new Error(\"id is required\");\n    }\n\n    const cached = await cache.get(cacheKey(id));\n    if (cached) {\n      return { ...cached, source: \"cache\" };\n    }\n\n    const product = await repo.findById(id);\n    if (!product) {\n      return null;\n    }\n\n    await cache.set(cacheKey(id), product, TTL_SECONDS);\n    return { ...product, source: \"db\" };\n  }\n\n  return { getProduct };\n}\n\nmodule.exports = { createProductService };\n"
+    },
+    {
+      "eventId": "e11",
+      "t": 1301,
+      "code": "// productService.js\nfunction createProductService({ cache, repo, logger }) {\n  const TTL_SECONDS = 60;\n\n  function cacheKey(id) {\n    return `product:${id}`;\n  }\n\n  async function getProduct(id) {\n    if (!id) {\n      throw new Error(\"id is required\");\n    }\n\n    const cached = await cache.get(cacheKey(id));\n    if (cached) {\n      return { ...cached, source: \"cache\" };\n    }\n\n    const product = await repo.findById(id);\n    if (!product) {\n      return null;\n    }\n\n    await cache.set(cacheKey(id), product, TTL_SECONDS);\n    return { ...product, source: \"db\" };\n  }\n\n  return { getProduct };\n}\n\nmodule.exports = { createProductService };\n"
+    },
+    {
+      "eventId": "e12",
+      "t": 2158,
+      "code": "// productService.js\nfunction createProductService({ cache, repo, logger }) {\n  const TTL_SECONDS = 60;\n\n  function cacheKey(id) {\n    return `product:${id}`;\n  }\n\n  async function getProduct(id) {\n    if (!id) {\n      throw new Error(\"id is required\");\n    }\n\n    const cached = await cache.get(cacheKey(id));\n    if (cached) {\n      return { ...cached, source: \"cache\" };\n    }\n\n    const product = await repo.findById(id);\n    if (!product) {\n      return null;\n    }\n\n    await cache.set(cacheKey(id), product, TTL_SECONDS);\n    return { ...product, source: \"db\" };\n  }\n\n  return { getProduct };\n}\n\nmodule.exports = { createProductService };\n"
+    },
+    {
+      "eventId": "e13",
+      "t": 2245,
+      "code": "// productService.js\nfunction createProductService({ cache, repo, logger }) {\n  const TTL_SECONDS = 60;\n\n  function cacheKey(id) {\n    return `product:${id}`;\n  }\n\n  async function getProduct(id) {\n    if (!id) {\n      throw new Error(\"id is required\");\n    }\n\n    let cached = null;\n    try {\n      cached = await cache.get(cacheKey(id));\n    } catch (err) {\n      logger.warn(\"cache.get failed, falling back to repo\", { id, error: err.message });\n    }\n    if (cached) {\n      return { ...cached, source: \"cache\" };\n    }\n\n    const product = await repo.findById(id);\n    if (!product) {\n      return null;\n    }\n\n    try {\n      await cache.set(cacheKey(id), product, TTL_SECONDS);\n    } catch (err) {\n      logger.warn(\"cache.set failed\", { id, error: err.message });\n    }\n    return { ...product, source: \"db\" };\n  }\n\n  return { getProduct };\n}\n\nmodule.exports = { createProductService };\n"
+    },
+    {
+      "eventId": "e14",
+      "t": 2286,
+      "code": "// productService.js\nfunction createProductService({ cache, repo, logger }) {\n  const TTL_SECONDS = 60;\n\n  function cacheKey(id) {\n    return `product:${id}`;\n  }\n\n  async function getProduct(id) {\n    if (!id) {\n      throw new Error(\"id is required\");\n    }\n\n    let cached = null;\n    try {\n      cached = await cache.get(cacheKey(id));\n    } catch (err) {\n      logger.warn(\"cache.get failed, falling back to repo\", { id, error: err.message });\n    }\n    if (cached) {\n      return { ...cached, source: \"cache\" };\n    }\n\n    const product = await repo.findById(id);\n    if (!product) {\n      return null;\n    }\n\n    try {\n      await cache.set(cacheKey(id), product, TTL_SECONDS);\n    } catch (err) {\n      logger.warn(\"cache.set failed\", { id, error: err.message });\n    }\n    return { ...product, source: \"db\" };\n  }\n\n  return { getProduct };\n}\n\nmodule.exports = { createProductService };\n"
+    },
+    {
+      "eventId": "e15",
+      "t": 2287,
+      "code": "// productService.js\nfunction createProductService({ cache, repo, logger }) {\n  const TTL_SECONDS = 60;\n\n  function cacheKey(id) {\n    return `product:${id}`;\n  }\n\n  async function getProduct(id) {\n    if (!id) {\n      throw new Error(\"id is required\");\n    }\n\n    let cached = null;\n    try {\n      cached = await cache.get(cacheKey(id));\n    } catch (err) {\n      logger.warn(\"cache.get failed, falling back to repo\", { id, error: err.message });\n    }\n    if (cached) {\n      return { ...cached, source: \"cache\" };\n    }\n\n    const product = await repo.findById(id);\n    if (!product) {\n      return null;\n    }\n\n    try {\n      await cache.set(cacheKey(id), product, TTL_SECONDS);\n    } catch (err) {\n      logger.warn(\"cache.set failed\", { id, error: err.message });\n    }\n    return { ...product, source: \"db\" };\n  }\n\n  return { getProduct };\n}\n\nmodule.exports = { createProductService };\n"
+    },
+    {
+      "eventId": "e16",
+      "t": 2430,
+      "code": "// productService.js\nfunction createProductService({ cache, repo, logger }) {\n  const TTL_SECONDS = 60;\n\n  function cacheKey(id) {\n    return `product:${id}`;\n  }\n\n  async function getProduct(id) {\n    if (!id) {\n      throw new Error(\"id is required\");\n    }\n\n    let cached = null;\n    try {\n      cached = await cache.get(cacheKey(id));\n    } catch (err) {\n      logger.warn(\"cache.get failed, falling back to repo\", { id, error: err.message });\n    }\n    if (cached) {\n      return { ...cached, source: \"cache\" };\n    }\n\n    const product = await repo.findById(id);\n    if (!product) {\n      return null;\n    }\n\n    try {\n      await cache.set(cacheKey(id), product, TTL_SECONDS);\n    } catch (err) {\n      logger.warn(\"cache.set failed\", { id, error: err.message });\n    }\n    return { ...product, source: \"db\" };\n  }\n\n  return { getProduct };\n}\n\nmodule.exports = { createProductService };\n"
+    },
+    {
+      "eventId": "e17",
+      "t": 3428,
+      "code": "// productService.js\nfunction createProductService({ cache, repo, logger }) {\n  const TTL_SECONDS = 60;\n\n  function cacheKey(id) {\n    return `product:${id}`;\n  }\n\n  async function getProduct(id) {\n    if (!id) {\n      throw new Error(\"id is required\");\n    }\n\n    let cached = null;\n    try {\n      cached = await cache.get(cacheKey(id));\n    } catch (err) {\n      logger.warn(\"cache.get failed, falling back to repo\", { id, error: err.message });\n    }\n    if (cached) {\n      return { ...cached, source: \"cache\" };\n    }\n\n    const product = await repo.findById(id);\n    if (!product) {\n      return null;\n    }\n\n    try {\n      await cache.set(cacheKey(id), product, TTL_SECONDS);\n    } catch (err) {\n      logger.warn(\"cache.set failed\", { id, error: err.message });\n    }\n    return { ...product, source: \"db\" };\n  }\n\n  return { getProduct };\n}\n\nmodule.exports = { createProductService };\n"
+    },
+    {
+      "eventId": "e18",
+      "t": 3747,
+      "code": "// productService.js\nfunction createProductService({ cache, repo, logger }) {\n  const TTL_SECONDS = 60;\n\n  function cacheKey(id) {\n    return `product:${id}`;\n  }\n\n  async function getProduct(id) {\n    if (!id) {\n      throw new Error(\"id is required\");\n    }\n\n    let cached = null;\n    try {\n      cached = await cache.get(cacheKey(id));\n    } catch (err) {\n      logger.warn(\"cache.get failed, falling back to repo\", { id, error: err.message });\n    }\n    if (cached) {\n      return { ...cached, source: \"cache\" };\n    }\n\n    const product = await repo.findById(id);\n    if (!product) {\n      return null;\n    }\n\n    try {\n      await cache.set(cacheKey(id), product, TTL_SECONDS);\n    } catch (err) {\n      logger.warn(\"cache.set failed\", { id, error: err.message });\n    }\n    return { ...product, source: \"db\" };\n  }\n\n  return { getProduct };\n}\n\nmodule.exports = { createProductService };\n"
+    },
+    {
+      "eventId": "e19",
+      "t": 3849,
+      "code": "// productService.js\nfunction createProductService({ cache, repo, logger }) {\n  const TTL_SECONDS = 60;\n\n  function cacheKey(id) {\n    return `product:${id}`;\n  }\n\n  async function getProduct(id) {\n    if (!id) {\n      throw new Error(\"id is required\");\n    }\n\n    let cached = null;\n    try {\n      cached = await cache.get(cacheKey(id));\n    } catch (err) {\n      logger.warn(\"cache.get failed, falling back to repo\", { id, error: err.message });\n    }\n    if (cached) {\n      return { ...cached, source: \"cache\" };\n    }\n\n    const product = await repo.findById(id);\n    if (!product) {\n      return null;\n    }\n\n    try {\n      await cache.set(cacheKey(id), product, TTL_SECONDS);\n    } catch (err) {\n      logger.warn(\"cache.set failed\", { id, error: err.message });\n    }\n    return { ...product, source: \"db\" };\n  }\n\n  return { getProduct };\n}\n\nmodule.exports = { createProductService };\n"
+    },
+    {
+      "eventId": "e20",
+      "t": 4601,
+      "code": "// productService.js\nfunction createProductService({ cache, repo, logger }) {\n  const TTL_SECONDS = 60;\n\n  function cacheKey(id) {\n    return `product:${id}`;\n  }\n\n  async function getProduct(id) {\n    if (!id) {\n      throw new Error(\"id is required\");\n    }\n\n    let cached = null;\n    try {\n      cached = await cache.get(cacheKey(id));\n    } catch (err) {\n      logger.warn(\"cache.get failed, falling back to repo\", { id, error: err.message });\n    }\n    if (cached) {\n      return { ...cached, source: \"cache\" };\n    }\n\n    const product = await repo.findById(id);\n    if (!product) {\n      return null;\n    }\n\n    try {\n      await cache.set(cacheKey(id), product, TTL_SECONDS);\n    } catch (err) {\n      logger.warn(\"cache.set failed\", { id, error: err.message });\n    }\n    return { ...product, source: \"db\" };\n  }\n\n  return { getProduct };\n}\n\nmodule.exports = { createProductService };\n"
+    },
+    {
+      "eventId": "e21",
+      "t": 4631,
+      "code": "// productService.js\nfunction createProductService({ cache, repo, logger }) {\n  const TTL_SECONDS = 60;\n\n  function cacheKey(id) {\n    return `product:${id}`;\n  }\n\n  async function getProduct(id) {\n    if (!id) {\n      throw new Error(\"id is required\");\n    }\n\n    let cached = null;\n    try {\n      cached = await cache.get(cacheKey(id));\n    } catch (err) {\n      logger.warn(\"cache.get failed, falling back to repo\", { id, error: err.message });\n    }\n    if (cached) {\n      return { ...cached, source: \"cache\" };\n    }\n\n    const product = await repo.findById(id);\n    if (!product) {\n      return null;\n    }\n\n    try {\n      await cache.set(cacheKey(id), product, TTL_SECONDS);\n    } catch (err) {\n      logger.warn(\"cache.set failed\", { id, error: err.message });\n    }\n    return { ...product, source: \"db\" };\n  }\n\n  return { getProduct };\n}\n\nmodule.exports = { createProductService };\n"
+    },
+    {
+      "eventId": "e22",
+      "t": 5714,
+      "code": "// productService.js\nfunction createProductService({ cache, repo, logger }) {\n  const TTL_SECONDS = 60;\n\n  function cacheKey(id) {\n    return `product:${id}`;\n  }\n\n  async function getProduct(id) {\n    if (!id) {\n      throw new Error(\"id is required\");\n    }\n\n    let cached = null;\n    try {\n      cached = await cache.get(cacheKey(id));\n    } catch (err) {\n      logger.warn(\"cache.get failed, falling back to repo\", { id, error: err.message });\n    }\n    if (cached) {\n      return { ...cached, source: \"cache\" };\n    }\n\n    const product = await repo.findById(id);\n    if (!product) {\n      return null;\n    }\n\n    try {\n      await cache.set(cacheKey(id), product, TTL_SECONDS);\n    } catch (err) {\n      logger.warn(\"cache.set failed\", { id, error: err.message });\n    }\n    return { ...product, source: \"db\" };\n  }\n\n  return { getProduct };\n}\n\nmodule.exports = { createProductService };\n"
+    },
+    {
+      "eventId": "e23",
+      "t": 5736,
+      "code": "// productService.js\nfunction createProductService({ cache, repo, logger }) {\n  const TTL_SECONDS = 60;\n\n  function cacheKey(id) {\n    return `product:${id}`;\n  }\n\n  async function getProduct(id) {\n    if (!id) {\n      throw new Error(\"id is required\");\n    }\n\n    let cached = null;\n    try {\n      cached = await cache.get(cacheKey(id));\n    } catch (err) {\n      logger.warn(\"cache.get failed, falling back to repo\", { id, error: err.message });\n    }\n    if (cached) {\n      return { ...cached, source: \"cache\" };\n    }\n\n    const product = await repo.findById(id);\n    if (!product) {\n      return null;\n    }\n\n    try {\n      await cache.set(cacheKey(id), product, TTL_SECONDS);\n    } catch (err) {\n      logger.warn(\"cache.set failed\", { id, error: err.message });\n    }\n    return { ...product, source: \"db\" };\n  }\n\n  return { getProduct };\n}\n\nmodule.exports = { createProductService };\n"
+    },
+    {
+      "eventId": "e24",
+      "t": 5736,
+      "code": "// productService.js\nfunction createProductService({ cache, repo, logger }) {\n  const TTL_SECONDS = 60;\n\n  function cacheKey(id) {\n    return `product:${id}`;\n  }\n\n  async function getProduct(id) {\n    if (!id) {\n      throw new Error(\"id is required\");\n    }\n\n    let cached = null;\n    try {\n      cached = await cache.get(cacheKey(id));\n    } catch (err) {\n      logger.warn(\"cache.get failed, falling back to repo\", { id, error: err.message });\n    }\n    if (cached) {\n      return { ...cached, source: \"cache\" };\n    }\n\n    const product = await repo.findById(id);\n    if (!product) {\n      return null;\n    }\n\n    try {\n      await cache.set(cacheKey(id), product, TTL_SECONDS);\n    } catch (err) {\n      logger.warn(\"cache.set failed\", { id, error: err.message });\n    }\n    return { ...product, source: \"db\" };\n  }\n\n  return { getProduct };\n}\n\nmodule.exports = { createProductService };\n"
+    },
+    {
+      "eventId": "e25",
+      "t": 5736,
+      "code": "// productService.js\nfunction createProductService({ cache, repo, logger }) {\n  const TTL_SECONDS = 60;\n\n  function cacheKey(id) {\n    return `product:${id}`;\n  }\n\n  async function getProduct(id) {\n    if (!id) {\n      throw new Error(\"id is required\");\n    }\n\n    let cached = null;\n    try {\n      cached = await cache.get(cacheKey(id));\n    } catch (err) {\n      logger.warn(\"cache.get failed, falling back to repo\", { id, error: err.message });\n    }\n    if (cached) {\n      return { ...cached, source: \"cache\" };\n    }\n\n    const product = await repo.findById(id);\n    if (!product) {\n      return null;\n    }\n\n    try {\n      await cache.set(cacheKey(id), product, TTL_SECONDS);\n    } catch (err) {\n      logger.warn(\"cache.set failed\", { id, error: err.message });\n    }\n    return { ...product, source: \"db\" };\n  }\n\n  return { getProduct };\n}\n\nmodule.exports = { createProductService };\n"
+    }
+  ],
+  "suggestions": [],
+  "finalCode": "// productService.js\nfunction createProductService({ cache, repo, logger }) {\n  const TTL_SECONDS = 60;\n\n  function cacheKey(id) {\n    return `product:${id}`;\n  }\n\n  async function getProduct(id) {\n    if (!id) {\n      throw new Error(\"id is required\");\n    }\n\n    let cached = null;\n    try {\n      cached = await cache.get(cacheKey(id));\n    } catch (err) {\n      logger.warn(\"cache.get failed, falling back to repo\", { id, error: err.message });\n    }\n    if (cached) {\n      return { ...cached, source: \"cache\" };\n    }\n\n    const product = await repo.findById(id);\n    if (!product) {\n      return null;\n    }\n\n    try {\n      await cache.set(cacheKey(id), product, TTL_SECONDS);\n    } catch (err) {\n      logger.warn(\"cache.set failed\", { id, error: err.message });\n    }\n    return { ...product, source: \"db\" };\n  }\n\n  return { getProduct };\n}\n\nmodule.exports = { createProductService };\n",
+  "lineOrigins": [
+    "starter",
+    "starter",
+    "starter",
+    "starter",
+    "starter",
+    "starter",
+    "starter",
+    "starter",
+    "starter",
+    "starter",
+    "starter",
+    "starter",
+    "starter",
+    "paste",
+    "paste",
+    "paste",
+    "paste",
+    "paste",
+    "paste",
+    "starter",
+    "starter",
+    "starter",
+    "starter",
+    "starter",
+    "starter",
+    "starter",
+    "starter",
+    "starter",
+    "paste",
+    "paste",
+    "paste",
+    "paste",
+    "paste",
+    "starter",
+    "starter",
+    "starter",
+    "starter",
+    "starter",
+    "starter",
+    "starter",
+    "starter"
+  ],
+  "endedAt": "2026-11-07T07:20:58.764Z",
+  "endReason": "escaped"
+}
