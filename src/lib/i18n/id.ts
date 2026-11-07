@@ -1,6 +1,6 @@
 import type { TranslationKey } from "./en";
-<<<<<<< Updated upstream
 export const id: Record<TranslationKey, string> = {
+  backToHome: "Kembali ke halaman utama",
   inquisitorEnough: "Inquisitor telah memiliki cukup informasi untuk saat ini", inquisitorThinking: "Inquisitor sedang berpikir…", inquisitorAsk: "Ajukan pertanyaan berdasarkan kode Anda", defenceAbove: "Pertanyaan pembelaan tersedia di atas.",
   signalsTitle: "Sinyal yang terkumpul", signalsTooltip: "Sinyal merupakan bukti bagi peninjau manusia, bukan skor.", signalNotice: "+1 sinyal {axis}",
   debugging: "Debugging", design: "Desain", communication: "Komunikasi", ai_supervision: "Pengawasan AI", notAssessed: "Tidak dinilai",
@@ -26,10 +26,4 @@ export const id: Record<TranslationKey, string> = {
   sessionEscaped: "Anda berhasil keluar", sessionTimeout: "Waktu habis — pekerjaan Anda tersimpan.", sessionEnded: "Sesi ini telah berakhir", sessionSaved: "Sesi Anda tersimpan di peramban ini untuk ditinjau manusia.",
   triageTitle: "Tandai jalur kegagalan", triageInstructions: "Klik tepi nomor baris atau tekan M pada baris untuk menandai rentang.", triageRange: "Baris terpilih {start}–{end}", triageSelect: "Pilih rentang baris yang Anda curigai.", hypothesis: "Hipotesis Anda", submitTriage: "Kirim triase", triageRequirements: "Pilih satu hingga delapan baris dan jelaskan hipotesis Anda dengan sedikitnya lima belas karakter.", triageHint: "{hint}",
   preparingQuestion: "Inquisitor sedang menyiapkan pertanyaan pertama Anda…", defenceAnswer: "Jawaban Anda", answerMinimum: "Gunakan sedikitnya tiga puluh karakter.", answerLong: "Jawaban ringkas lebih mudah ditinjau; Anda tetap dapat mengirim jawaban ini.", submitAnswer: "Kirim jawaban", viewDiff: "Lihat perbedaan", viewCode: "Lihat kode", enteringRoom: "Membuka ruangan berikutnya…", timeoutThanks: "Waktu habis — pekerjaan Anda sejauh ini telah dikirim. Terima kasih.", escapedTime: "Anda keluar dalam {time}", escapedThanks: "Sesi Anda telah dikirim kepada peninjau manusia. Terima kasih.", savingFinal: "Menyimpan hasil pengujian terakhir…",
-=======
-
-// B7 supplies Indonesian translations; missing entries deliberately use English.
-export const id: Partial<Record<TranslationKey, string>> = {
-  backToHome: "Kembali ke halaman utama",
->>>>>>> Stashed changes
 };
