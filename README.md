@@ -2,7 +2,7 @@
 
 Evidence-backed first-round technical screening, designed as a 45-minute **escape room** inside a broken backend
 codebase. Four Codex agents (Saboteur, Inquisitor, Assistant, Analyst) run the product; **code verifies, humans decide.**
-Built by **Team Cathfish Farmer** at the Regional Codex Hackathon Indonesia (Sea × OpenAI).
+Built by **Team Catfish Farmer** at the Regional Codex Hackathon Indonesia (Sea × OpenAI).
 
 > The AI presents evidence; a human makes the hiring decision. Nothing is auto-rejected. Demo data uses fictional candidates only.
 
