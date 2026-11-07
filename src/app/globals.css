@@ -1,0 +1,123 @@
+@import "tailwindcss";
+
+:root {
+  /* surfaces */
+  --he-bg:         #050508;   /* page */
+  --he-surface:    #11111A;   /* cards */
+  --he-surface-2:  #181826;   /* raised: editor chrome, modals */
+  --he-surface-3:  #20202F;   /* hover */
+  --he-border:     #2A2A3C;
+  --he-text:       #F5F5F7;
+  --he-muted:      #A3A3B8;
+
+  /* neon accents (from the deck's arcs and card bars) */
+  --he-orange:     #F26B3A;   /* Room 2 · The Bug · primary CTA */
+  --he-blue:       #4FB8F2;   /* Room 1 · Triage · focus ring · Inquisitor */
+  --he-green:      #5ED88F;   /* Room 3 · The Defence · tests passing */
+  --he-purple:     #8B5CF6;   /* Codex agents · AI Assistant */
+  --he-yellow:     #F5B941;   /* timer · warnings · "AI-predicted" */
+  --he-red:        #F2545B;   /* failing tests · errors (always with icon + text) */
+
+  /* glow */
+  --he-glow-orange: 0 0 24px rgba(242,107,58,.35);
+  --he-glow-blue:   0 0 24px rgba(79,184,242,.35);
+  --he-glow-green:  0 0 24px rgba(94,216,143,.35);
+  --he-glow-purple: 0 0 24px rgba(139,92,246,.40);
+
+  --he-radius: 12px;
+}
+
+:root {
+  color-scheme: dark;
+  --he-font-ui: var(--font-sans), sans-serif;
+  --he-font-mono: var(--font-mono), monospace;
+}
+
+@theme inline {
+  --color-he-bg: var(--he-bg);
+  --color-he-surface: var(--he-surface);
+  --color-he-surface-2: var(--he-surface-2);
+  --color-he-surface-3: var(--he-surface-3);
+  --color-he-border: var(--he-border);
+  --color-he-text: var(--he-text);
+  --color-he-muted: var(--he-muted);
+  --color-he-orange: var(--he-orange);
+  --color-he-blue: var(--he-blue);
+  --color-he-green: var(--he-green);
+  --color-he-purple: var(--he-purple);
+  --color-he-yellow: var(--he-yellow);
+  --color-he-red: var(--he-red);
+  --color-he-room1: var(--he-blue);
+  --color-he-room2: var(--he-orange);
+  --color-he-room3: var(--he-green);
+  --color-he-agent: var(--he-purple);
+  --color-he-time: var(--he-yellow);
+  --color-he-danger: var(--he-red);
+  --color-he-neutral: var(--he-muted);
+  --color-he-integrity: var(--he-muted);
+  --shadow-he-glow-orange: var(--he-glow-orange);
+  --shadow-he-glow-blue: var(--he-glow-blue);
+  --shadow-he-glow-green: var(--he-glow-green);
+  --shadow-he-glow-purple: var(--he-glow-purple);
+  --radius-he: var(--he-radius);
+  --font-he-ui: var(--he-font-ui);
+  --font-he-mono: var(--he-font-mono);
+  --font-he-retro: var(--font-retro);
+}
+
+[data-theme="retro"] {
+  --he-font-ui: var(--font-retro), sans-serif;
+  --he-radius: 0;
+  --he-glow-orange: none;
+  --he-glow-blue: none;
+  --he-glow-green: none;
+  --he-glow-purple: none;
+  font-synthesis: none;
+}
+
+html {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--he-bg);
+  color: var(--he-text);
+  font-family: var(--he-font-ui);
+  font-size: 15px;
+  line-height: 24px;
+}
+
+code, pre, kbd, samp {
+  font-family: var(--he-font-mono);
+}
+
+:focus-visible {
+  outline: 2px solid var(--he-blue);
+  outline-offset: 2px;
+}
+
+.skip-link {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 50;
+  padding: 0.5rem 1rem;
+  background: var(--he-surface);
+  color: var(--he-text);
+  transform: translateY(-200%);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+[data-theme="retro"] body {
+  font-size: 16px;
+  line-height: 26px;
+}
+
+[data-theme="retro"] h1 {
+  font-weight: 500;
+}
