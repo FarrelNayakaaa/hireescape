@@ -1,0 +1,15 @@
+import { beforeEach, expect, it, vi } from "vitest";
+import { callStructured, CodexError } from "@/lib/codex/client";
+import fixture from "@/lib/codex/fixtures/analyst.json";
+import { POST, runtime, maxDuration } from "@/app/api/analyst/route";
+import { buildAnalysisRequest } from "../lib/buildRequest";
+import { challenge, fixtureSession, secret } from "./fixtures";
+vi.mock("@/lib/codex/client",async(original)=>({...await original<typeof import("@/lib/codex/client")>(),callStructured:vi.fn()}));
+beforeEach(()=>{vi.mocked(callStructured).mockReset();});
+const input=()=>buildAnalysisRequest(fixtureSession(),challenge,secret);
+const request=(body:unknown)=>new Request("http://localhost/api/analyst",{method:"POST",body:JSON.stringify(body)});
+it("returns unverified output and meta, keeping verification on the client",async()=>{const meta={role:"analyst" as const,model:"mock",promptVersion:"analyst@2",latencyMs:800,attempts:1,mock:true};vi.mocked(callStructured).mockResolvedValue({data:fixture,meta});const response=await POST(request(input()));expect(await response.json()).toEqual({output:fixture,meta});expect(callStructured).toHaveBeenCalledWith(expect.objectContaining({role:"analyst",timeoutMs:50000,retries:0,mockFixture:fixture}));expect(runtime).toBe("nodejs");expect(maxDuration).toBe(60);});
+it("rejects malformed JSON",async()=>{expect((await POST(new Request("http://localhost/api/analyst",{method:"POST",body:"{"}))).status).toBe(400);expect(callStructured).not.toHaveBeenCalled();});
+it.each(["integrity","camera","signals"])("strictly rejects %s before a model call",async key=>{const response=await POST(request({...input(),[key]:"private"}));expect(response.status).toBe(400);expect(callStructured).not.toHaveBeenCalled();});
+it("rejects unknown nested challenge/objective fields",async()=>{const body=input();expect((await POST(request({...body,objective:{...body.objective,integrity:"private"}}))).status).toBe(400);expect((await POST(request({...body,challenge:{...body.challenge,integrity:"private"}}))).status).toBe(400);expect(callStructured).not.toHaveBeenCalled();});
+it("redacts model-service failures",async()=>{vi.mocked(callStructured).mockRejectedValue(new CodexError("upstream","private upstream details"));const response=await POST(request(input()));expect(response.status).toBe(502);expect(JSON.stringify(await response.json())).not.toContain("private");});

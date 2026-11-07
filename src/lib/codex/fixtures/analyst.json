@@ -1,0 +1,131 @@
+{
+  "claims": [
+    {
+      "dimension": "debugging",
+      "signal": "strength",
+      "statement": "Identified cache access as the causal boundary in the triage hypothesis.",
+      "evidence": [
+        {
+          "kind": "event",
+          "line": null,
+          "eventId": "e3",
+          "quote": "cache.get throws on timeout and nothing catches it"
+        }
+      ],
+      "basis": "executed"
+    },
+    {
+      "dimension": "debugging",
+      "signal": "strength",
+      "statement": "All hidden tests passed in the recorded run.",
+      "evidence": [
+        {
+          "kind": "event",
+          "line": null,
+          "eventId": "e14",
+          "quote": "\"passed\":6"
+        }
+      ],
+      "basis": "executed"
+    },
+    {
+      "dimension": "design",
+      "signal": "strength",
+      "statement": "Added a warning with cache failure context.",
+      "evidence": [
+        {
+          "kind": "code_line",
+          "line": 18,
+          "eventId": null,
+          "quote": "logger.warn(\"cache.get failed, falling back to repo\""
+        }
+      ],
+      "basis": "executed"
+    },
+    {
+      "dimension": "design",
+      "signal": "strength",
+      "statement": "Separated the cache boundary from the repository boundary in the explanation.",
+      "evidence": [
+        {
+          "kind": "event",
+          "line": null,
+          "eventId": "e16",
+          "quote": "I catch cache failures separately so repository errors still propagate."
+        }
+      ],
+      "basis": "executed"
+    },
+    {
+      "dimension": "communication",
+      "signal": "strength",
+      "statement": "Explained why repository errors should remain visible.",
+      "evidence": [
+        {
+          "kind": "event",
+          "line": null,
+          "eventId": "e16",
+          "quote": "repository errors still propagate"
+        }
+      ],
+      "basis": "executed"
+    },
+    {
+      "dimension": "communication",
+      "signal": "strength",
+      "statement": "Described the cache as optional in the trade-off answer.",
+      "evidence": [
+        {
+          "kind": "event",
+          "line": null,
+          "eventId": "e18",
+          "quote": "The cache is optional; repository failures remain visible to the caller."
+        }
+      ],
+      "basis": "executed"
+    },
+    {
+      "dimension": "ai_supervision",
+      "signal": "strength",
+      "statement": "Provided cache timeout context and a narrow scope in the assistant prompt.",
+      "evidence": [
+        {
+          "kind": "event",
+          "line": null,
+          "eventId": "e9",
+          "quote": "why would getProduct fail when the cache times out? only fix the get path"
+        }
+      ],
+      "basis": "executed"
+    },
+    {
+      "dimension": "ai_supervision",
+      "signal": "strength",
+      "statement": "Reviewed the suggestion before applying it.",
+      "evidence": [
+        {
+          "kind": "event",
+          "line": null,
+          "eventId": "e12",
+          "quote": "\"reviewedFirst\":true"
+        }
+      ],
+      "basis": "executed"
+    },
+    {
+      "dimension": "design",
+      "signal": "observation",
+      "statement": "Recorded a circuit-breaker implementation.",
+      "evidence": [
+        {
+          "kind": "code_line",
+          "line": 1,
+          "eventId": null,
+          "quote": "CIRCUIT_BREAKER_EVIDENCE_THAT_EXISTS_NOWHERE"
+        }
+      ],
+      "basis": "executed"
+    }
+  ],
+  "summary": "The recorded run passed six hidden tests. The candidate identified the cache boundary and explained the separation from repository failures. The assistant prompt included cache timeout context and a limited scope."
+}
