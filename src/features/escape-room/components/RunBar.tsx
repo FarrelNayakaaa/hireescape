@@ -19,7 +19,7 @@ export function RunBar({ room, running, unlocked, hidden, recorded, onRun, onCon
         aria-describedby={running || unlocked || room === 3 ? `${reasonId}-run` : undefined}>{t(locale, "runTests")}</Button>
         {(running || unlocked || room === 3) && <p id={`${reasonId}-run`} className="mt-2 text-xs text-he-muted">{t(locale, running ? "running" : "codeSealed")}</p>}</div>
       <div><Button variant="secondary" onClick={onCheck} loading={checking} disabled={!onCheck || room !== 2 || running || checking || checkLimit} aria-describedby={`${reasonId}-check`}>{t(locale, "check")}</Button>
-        <p id={`${reasonId}-check`} className="mt-2 text-xs text-he-muted">{checkLimit ? "The Inquisitor has enough for now" : checking ? "Inquisitor is thinking…" : room !== 2 ? t(locale, "inquisitorRoom1") : onCheck ? "Ask a grounded question about your code" : t(locale, "checkDeferred")}</p></div>
+        <p id={`${reasonId}-check`} className="mt-2 text-xs text-he-muted">{checkLimit ? t(locale, "inquisitorEnough") : checking ? t(locale, "inquisitorThinking") : room === 3 ? t(locale, "defenceAbove") : room === 1 ? t(locale, "inquisitorRoom1") : onCheck ? t(locale, "inquisitorAsk") : t(locale, "checkDeferred")}</p></div>
       <HiddenTestLocks results={hidden} recordedCounts={recorded && room === 2 ? recorded.hidden : undefined}
         summary={t(locale, "testCounts", { passed: hidden?.passed ?? recorded?.hidden.passed ?? 0, total: hidden?.total ?? recorded?.hidden.total ?? 0, suite: t(locale, "hiddenSuite") })}
         emptyLabel={t(locale, "hiddenPending")} openLabel={t(locale, "vaultOpen")}

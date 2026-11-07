@@ -30,11 +30,12 @@ export function EscapeRoomShell({ assessmentId }: { assessmentId: string }) {
   };
   return <main id="main-content" data-assessment-id={assessmentId} className="min-h-screen bg-he-bg px-6 py-16 text-he-text">
     <p className="mb-6 text-center text-sm text-he-muted lg:hidden">{t(locale, "laptopNotice")}</p>
-    {hydration.error ? <AssessmentState state="error" locale={locale} onRetry={() => void hydration.retry()} />
+    <div className="hidden lg:block">{hydration.error ? <AssessmentState state="error" locale={locale} onRetry={() => void hydration.retry()} />
       : status === "loading" || !hydration.hydrated ? <AssessmentState state="loading" locale={locale} />
       : !bundle ? <AssessmentState state="not_found" locale={locale} />
       : session && (session.endedAt || session.events.some((event) => event.type === "rules_ack")) ? <RoomWorkspace key={session.id} assessment={bundle.assessment} challenge={bundle.challenge} session={session} />
       : <>{startError && <p role="alert" className="mb-4 text-center text-he-red">{t(locale, "startError")}</p>}
         <RulesScreen assessment={bundle.assessment} title={bundle.challenge.title} onStart={start} /></>}
+    </div>
   </main>;
 }

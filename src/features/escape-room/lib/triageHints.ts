@@ -9,3 +9,17 @@ export const triageHints: Record<DefectType, string> = {
   unbounded_retry: "Look at which failures are worth trying again.",
   resource_leak: "Look at every way this function can end.",
 };
+
+const indonesianHints: Record<import("@/lib/contracts").DefectType, string> = {
+  swallowed_exception: "Perhatikan apa yang terjadi setelah ada masalah.",
+  unhandled_null: "Perhatikan data yang berasal dari luar berkas ini.",
+  cache_no_fallback: "Perhatikan dependensi permintaan yang bisa gagal.",
+  off_by_one: "Perhatikan batas: nilai persis saat perilaku berubah.",
+  shared_mutation: "Perhatikan siapa yang memiliki data yang diterima fungsi ini.",
+  missing_await: "Perhatikan urutan pekerjaan selesai, bukan urutan dimulai.",
+  unbounded_retry: "Perhatikan kegagalan mana yang layak dicoba lagi.",
+  resource_leak: "Perhatikan setiap cara fungsi ini dapat berakhir.",
+};
+export function triageHint(defectType: import("@/lib/contracts").DefectType, locale: "en" | "id"): string {
+  return (locale === "id" ? indonesianHints : triageHints)[defectType];
+}
