@@ -148,7 +148,7 @@ export function RoomWorkspace({ assessment, challenge, session }: { assessment: 
       <RightPanel room={room} aiAssistance={assessment.aiAssistance} title={challenge.title} brief={challenge.brief}
         visible={run.visible} hidden={run.hidden} running={run.status === "running"} recorded={recorded}
         assistantPanel={<AssistantPanel session={session} assessment={assessment} room={room} assistant={assistant} onTyping={setAssistantTyping} />}
-        inquisitorPanel={<InquisitorPanel session={session} thinking={inquisitor.thinking} meta={inquisitor.meta} onLine={inquisitor.focusLine} />} lastQuestionId={inquisitor.questions.at(-1)?.id}
+        inquisitorPanel={<InquisitorPanel locale={assessment.locale} session={session} thinking={inquisitor.thinking} meta={inquisitor.meta} onLine={inquisitor.focusLine} />} lastQuestionId={inquisitor.questions.at(-1)?.id}
         activeTab={ui.activeTab} onTabChange={(tab) => dispatch({ type: "select_tab", tab })} locale={locale} />
     </div>
     <SignalMap counts={signals} labels={{ debugging: t(locale, "debugging"), design: t(locale, "design"), communication: t(locale, "communication"), ai_supervision: t(locale, "ai_supervision") }} title={t(locale, "signalsTitle")} tooltip={t(locale, "signalsTooltip")} notAssessed={t(locale, "notAssessed")} />

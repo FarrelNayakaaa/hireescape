@@ -54,7 +54,7 @@ export function RightPanel({ room, aiAssistance, title, brief, visible = null, h
           {recorded.hidden.failedNames.map((name, index) => <p key={`${index}-${name}`} className="text-sm text-he-muted">{name}</p>)}
           {recorded.timedOut && <p role="alert">{t(locale, "testTimeout")}</p>}
           {recorded.runtimeError && <p role="alert">{t(locale, "testExecutionError")}</p>}
-        </section> : <TestResultsPanel visible={visible} hidden={hidden} running={running} />}
+        </section> : <TestResultsPanel locale={locale} visible={visible} hidden={hidden} running={running} />}
         <HiddenTestLocks results={hidden} recordedCounts={recorded?.hidden} summary={t(locale, "testCounts", { passed: hidden?.passed ?? recorded?.hidden.passed ?? 0, total: hidden?.total ?? recorded?.hidden.total ?? 0, suite: t(locale, "hiddenSuite") })}
           emptyLabel={t(locale, "hiddenPending")} openLabel={t(locale, "vaultOpen")}
           statusLabels={{ pass: t(locale, "pass"), fail: t(locale, "fail"), error: t(locale, "error") }} />

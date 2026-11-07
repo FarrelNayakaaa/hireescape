@@ -52,7 +52,7 @@ export function useInquisitor({ assessment, challenge, session, room, testing, a
     } catch { console.error("Inquisitor unavailable; continuing the session"); }
     const latest = getSession(session.id);
     if (latest && !latest.endedAt && mounted.current) {
-      if (mode === "defence" && !output) output = fallbackQuestion(latest.finalCode, index ?? 0);
+      if (mode === "defence" && !output) output = fallbackQuestion(latest.finalCode, index ?? 0, assessment.locale);
       if (output && validateQuestion(output, latest.finalCode, history).length === 0) {
         useSessionStore.getState().record(session.id, { type: "inquisitor_question", room: mode === "defence" ? 3 : 2, text: output.question,
           data: { mode, intent: output.intent, line: output.groundedIn.line, quote: output.groundedIn.quote, defenceIndex: index } });

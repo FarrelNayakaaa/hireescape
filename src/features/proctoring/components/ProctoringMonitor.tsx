@@ -23,6 +23,9 @@ export function ProctoringMonitor({ session, assessment, preparation, stream, vi
     const append = (sample: IntegritySample) => store.append(session.id, { ...sample, room: room.current });
     const stopBrowser = listenBrowserSignals(append, now);
     append({ kind: "fullscreen", t: now(), active: Boolean(document.fullscreenElement) });
+    const flush = () => { store.checkpoint(session.id); store.refresh(session.id, now()); };
+    // Hard navigation does not run React cleanup; preserve the final checkpoint first.
+    window.addEventListener("pagehide", flush);
     const checkpoint = setInterval(() => store.checkpoint(session.id), 10_000);
     const refresh = setInterval(() => store.refresh(session.id, now()), 30_000);
     const alreadyPhotographed = new Set<string>();
@@ -35,7 +38,7 @@ export function ProctoringMonitor({ session, assessment, preparation, stream, vi
       }
       setSignals(folded);
     }, 1000);
-    return () => { clearInterval(checkpoint); clearInterval(refresh); clearInterval(hud); stopBrowser(); store.checkpoint(session.id); store.refresh(session.id, now()); };
+    return () => { window.removeEventListener("pagehide", flush); clearInterval(checkpoint); clearInterval(refresh); clearInterval(hud); stopBrowser(); flush(); };
   }, [assessment.aiAssistance, assessment.proctoring.captureSnapshots, preparation, session.id, session.startedAt, session.endedAt, video]);
   useEffect(() => {
     if (session.endedAt || preparation.mode !== "camera_mic" || !stream) return;

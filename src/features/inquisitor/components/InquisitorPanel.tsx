@@ -1,9 +1,10 @@
 "use client";
 import { useState } from "react";
-import type { AgentMeta, Session } from "@/lib/contracts";
+import type { AgentMeta, AssessmentConfig, Session } from "@/lib/contracts";
 import { AgentAvatar, AgentChip, Button, EvidenceChip } from "@/components/ui";
+import { t } from "@/lib/i18n";
 import { useSessionStore } from "@/features/session";
-export function InquisitorPanel({ session, thinking, meta, onLine }: { session: Session; thinking: boolean; meta: AgentMeta | null; onLine(line: number): void }) {
+export function InquisitorPanel({ session, thinking, meta, onLine, locale = "en" }: { locale?: AssessmentConfig["locale"]; session: Session; thinking: boolean; meta: AgentMeta | null; onLine(line: number): void }) {
   const [answer, setAnswer] = useState("");
   const questions = session.events.filter((event) => event.type === "inquisitor_question");
   const last = questions.at(-1);
@@ -14,8 +15,8 @@ export function InquisitorPanel({ session, thinking, meta, onLine }: { session: 
       <blockquote className="whitespace-pre-wrap font-mono text-xs text-he-muted">{String(question.data?.quote ?? "")}</blockquote>
       {session.events.filter((event) => event.type === "candidate_answer" && event.data?.questionEventId === question.id).map((event) => <p key={event.id} className="whitespace-pre-wrap">{event.text}</p>)}
     </div>)}
-    {thinking && <p role="status">Inquisitor is thinking…</p>}
-    {canAnswer && <div><label>Your answer (optional)<textarea className="block w-full rounded border border-he-border bg-he-surface-2 p-3" value={answer} onChange={(event) => setAnswer(event.target.value)} /></label>
-      <Button disabled={!answer.trim()} onClick={() => { useSessionStore.getState().record(session.id, { type: "candidate_answer", room: 2, text: answer.trim(), data: { questionEventId: last.id } }); setAnswer(""); }}>Send answer</Button></div>}
+    {thinking && <p role="status">{t(locale, "inquisitorThinking")}</p>}
+    {canAnswer && <div><label>{t(locale, "answerOptional")}<textarea className="block w-full rounded border border-he-border bg-he-surface-2 p-3" value={answer} onChange={(event) => setAnswer(event.target.value)} /></label>
+      <Button disabled={!answer.trim()} onClick={() => { useSessionStore.getState().record(session.id, { type: "candidate_answer", room: 2, text: answer.trim(), data: { questionEventId: last.id } }); setAnswer(""); }}>{t(locale, "sendAnswer")}</Button></div>}
   </section>;
 }
