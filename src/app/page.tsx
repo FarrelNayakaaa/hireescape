@@ -16,6 +16,13 @@ const agents: { agent: CodexRole; name: string; line: string }[] = [
   { agent: "analyst", name: "Analyst", line: "Every claim cites evidence — or it's deleted." },
 ];
 
+const pricingPlans = [
+  { name: "Free", price: 0, allowance: "2 assessments / month", recommended: false, features: ["Seeded challenges", "Basic evidence reports", "Session replay", "1 manager account"] },
+  { name: "Starter", price: 22, allowance: "per month · 10 assessments", recommended: false, features: ["AI-generated challenges", "Full evidence reports", "Session replay", "1 manager account"] },
+  { name: "Growth", price: 55, allowance: "per month · 30 assessments", recommended: true, features: ["Everything in Starter", "3 manager accounts", "Bulk invitations", "Hiring workflow dashboard"] },
+  { name: "Business", price: 137, allowance: "per month · 100 assessments", recommended: false, features: ["Everything in Growth", "10 manager accounts", "Organization-wide analytics", "Priority support"] },
+];
+
 export default function Home() {
   return <>
     <header className="he-site-header he-page-width">
@@ -59,6 +66,18 @@ export default function Home() {
           <div className="he-claim"><Check size={19} aria-hidden="true" /><div><p className="he-small he-verified-label">Verified observation</p><p>Added a database fallback when the cache read failed.</p><div className="he-evidence-chips"><EvidenceChip kind="code_line" label="L24" /><EvidenceChip kind="event" label="e19 · test_run" /></div></div></div>
           <div className="he-dropped-claim"><X size={17} aria-hidden="true" /><div><p className="he-small"><s>Handles every cache outage in production.</s></p><p className="he-small he-muted">Removed: no supporting evidence.</p></div></div>
         </AccentCard>
+      </section>
+      <section id="pricing" className="he-page-width he-landing-section" aria-labelledby="he-pricing-title">
+        <div className="he-section-heading"><p className="he-eyebrow he-muted">PROPOSED 2026 PRICING</p><h2 id="he-pricing-title">2026 Pricing Plans</h2><p className="he-muted">Monthly plans in USD, from your first assessment to a growing hiring team.</p></div>
+        <div className="he-pricing-panel">
+          <div className="he-pricing-currency"><span className="he-chip he-mono">USD</span></div>
+          <div className="he-pricing-grid">{pricingPlans.map((plan) => <article key={plan.name} className={`he-pricing-plan${plan.recommended ? " he-pricing-plan--recommended" : ""}`} aria-labelledby={`he-plan-${plan.name.toLowerCase()}`}>
+            <div className="he-pricing-plan-heading"><h3 id={`he-plan-${plan.name.toLowerCase()}`}>{plan.name}</h3>{plan.recommended && <span className="he-chip he-pricing-recommended">Recommended</span>}</div>
+            <p className="he-pricing-price he-mono">${plan.price}</p>
+            <p className="he-small he-muted">{plan.allowance}</p>
+            <ul className="he-pricing-features">{plan.features.map((feature) => <li key={feature}><Check size={17} aria-hidden="true" /><span>{feature}</span></li>)}</ul>
+          </article>)}</div>
+        </div>
       </section>
     </main>
     <footer className="he-site-footer he-page-width"><span>HireEscape</span><p className="he-small he-muted">Built at Regional Codex Hackathon Indonesia</p></footer>
