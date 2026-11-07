@@ -29,3 +29,14 @@ it("limits optional local snapshots to ten and supports deleting them", () => {
  expect(Object.keys(useIntegrityStore.getState().pending.snapshots.snapshots)).toHaveLength(10);
  store.deleteSnapshots("snapshots"); expect(useIntegrityStore.getState().pending.snapshots.snapshots).toEqual({});
 });
+
+it("does not replace uncheckpointed device samples when monitoring restarts", () => {
+ const store = useIntegrityStore.getState();
+ const preparation = { assessmentId: "restart", fingerprint: "camera_mic", mode: "camera_mic" as const, consent: "given" as const, calibration: { faceOk: true, noiseFloor: .01, fullscreen: true } };
+ store.begin("restart", new Date(0).toISOString(), false, preparation);
+ store.append("restart", { kind: "device", t: 1000, camera: false, mic: true });
+ store.begin("restart", new Date(0).toISOString(), false, preparation);
+ store.append("restart", { kind: "device", t: 4000, camera: true, mic: true });
+ expect(store.refresh("restart", 5000)?.signals).toMatchObject([{ type: "camera_off", start: 1000, end: 4000 }]);
+ store.finish("restart", 5000);
+});

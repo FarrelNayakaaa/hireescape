@@ -6,7 +6,8 @@
       "line": "{line}",
       "quote": "{quote}"
     },
-    "intent": "probe_reasoning"
+    "intent": "probe_reasoning",
+    "questionId": "Pada revisi {revision} operasi di baris {line}, asumsi apa yang dapat mengubah hasilnya?"
   },
   "defence0": {
     "skip": false,
@@ -15,7 +16,8 @@
       "line": "{line}",
       "quote": "{quote}"
     },
-    "intent": "failure_mode"
+    "intent": "failure_mode",
+    "questionId": "Kegagalan apa yang dapat merambat dari operasi di baris {line} saat beban berkelanjutan?"
   },
   "defence1": {
     "skip": false,
@@ -24,7 +26,8 @@
       "line": "{line}",
       "quote": "{quote}"
     },
-    "intent": "observability"
+    "intent": "observability",
+    "questionId": "Sinyal operasional apa yang membedakan masalah dependensi di baris {line} dari permintaan tidak valid?"
   },
   "defence2": {
     "skip": false,
@@ -33,6 +36,7 @@
       "line": "{line}",
       "quote": "{quote}"
     },
-    "intent": "tradeoff"
+    "intent": "tradeoff",
+    "questionId": "Kompromi apa yang timbul dari keputusan di baris {line} saat trafik meningkat?"
   }
 }

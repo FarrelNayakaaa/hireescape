@@ -63,3 +63,12 @@ it("keeps Shift+Enter for newlines, shows the counter, and retries an inline fai
   await waitFor(() => expect(screen.getByRole("textbox")).toBeEnabled());
   expect(screen.queryByRole("button", { name: /copy/i })).not.toBeInTheDocument();
 });
+it("uses Indonesian controls and error recovery for an Indonesian assessment", async () => {
+  setup(2, { ...assessment, locale: "id" }); post.mockRejectedValueOnce(new Error("offline"));
+  fireEvent.change(screen.getByRole("textbox", { name: "Tanya Assistant" }), { target: { value: "perbaiki" } });
+  fireEvent.click(screen.getByRole("button", { name: "Kirim" }));
+  expect(await screen.findByRole("alert")).toHaveTextContent("Assistant tidak tersedia — coba lagi");
+  fireEvent.click(screen.getByRole("button", { name: "Coba lagi" }));
+  await screen.findByRole("button", { name: "Terapkan saran" }); expect(screen.getByRole("button", { name: "Tinjau perbedaan" })).toBeEnabled();
+  expect(post.mock.calls[0][1]).toMatchObject({ locale: "id" });
+});

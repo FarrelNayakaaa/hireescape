@@ -1,11 +1,12 @@
 "use client";
 
-import { useCallback, useEffect, useLayoutEffect, useRef } from "react";
-import Editor, { DiffEditor, type OnMount } from "@monaco-editor/react";
+import { useCallback, useEffect, useRef } from "react";
+import Editor, { type OnMount } from "@monaco-editor/react";
 import type { editor, IDisposable } from "monaco-editor";
 import type { MarkedRange } from "../lib/triageCheck";
 import type { AssessmentConfig } from "@/lib/contracts";
 import { t } from "@/lib/i18n";
+import { useMonacoDiff } from "@/lib/hooks/useMonacoDiff";
 import { configureMonaco } from "../lib/monacoSetup";
 
 // This module is dynamically imported with ssr:false, before Editor starts its loader.
@@ -35,17 +36,6 @@ export function MonacoEditor({ code, onMount, readOnly, locale, markedRange, rev
 }
 
 export function MonacoDiff({ original, modified, locale }: { original: string; modified: string; locale: AssessmentConfig["locale"] }) {
-  const instance = useRef<editor.IStandaloneDiffEditor | null>(null);
-  useLayoutEffect(() => () => {
-    const models = instance.current?.getModel();
-    // Monaco 0.57 requires detaching the diff before its models are disposed.
-    // The React wrapper otherwise disposes models while its diff still observes them.
-    instance.current?.setModel(null);
-    models?.original.dispose();
-    models?.modified.dispose();
-    instance.current = null;
-  }, []);
-  return <DiffEditor original={original} modified={modified} language="javascript" theme="hireescape-dark" height="100%"
-    keepCurrentOriginalModel keepCurrentModifiedModel onMount={(mounted) => { instance.current = mounted; }}
-    options={{ readOnly: true, originalEditable: false, minimap: { enabled: false }, fontSize: 14, automaticLayout: true, ariaLabel: t(locale, "viewDiff") }} />;
+  const container = useMonacoDiff(original, modified, t(locale, "viewDiff"));
+  return <div ref={container} className="h-full w-full" />;
 }

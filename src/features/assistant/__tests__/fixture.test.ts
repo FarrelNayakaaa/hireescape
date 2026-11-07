@@ -16,3 +16,9 @@ it("executes the generated demo full-file suggestion through all real seeded tes
     expect(result.failed).toBe(0); expect(result.passed).toBe(target === "hidden" ? 6 : 2);
   }
 });
+it("localizes mock explanations and summaries without changing executable code", () => {
+  const en = mockReply(input), id = mockReply({ ...input, locale: "id", prompt: "perbaiki" });
+  expect(id.message).toContain("Versi ini"); expect(id.message).not.toBe(en.message);
+  expect(id.suggestion?.summary).toContain("repositori"); expect(id.suggestion?.code).toBe(en.suggestion?.code);
+  expect(Object.keys(id)).toEqual(["message", "suggestion"]);
+});
