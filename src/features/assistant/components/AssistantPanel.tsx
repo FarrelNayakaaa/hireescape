@@ -10,9 +10,9 @@ export function AssistantPanel({ session, assessment, room, assistant, onTyping 
 }) {
   const [prompt, setPrompt] = useState(""); const [reviewing, setReviewing] = useState<Suggestion | null>(null);
   const reason = !assessment.aiAssistance ? "Off for this assessment" : room === 1 ? "Unlocks in Room 2 — triage is yours" : room === 3 ? "The defence is in your own words" : null;
-  if (reason) return <p className="rounded border border-he-border p-5 text-he-muted">{reason}</p>;
+  if (reason) return <div className="space-y-4 rounded border border-he-border p-5"><AgentAvatar agent="assistant" size="lg" /><p className="text-he-muted">{reason}</p></div>;
   const submit = async () => { const sent = await assistant.send(prompt); if (sent) { setPrompt(""); onTyping(false); } };
-  return <section className="space-y-4"><AgentChip agent="assistant" status={assistant.status === "sending" ? "typing…" : undefined} mock={assistant.meta?.mock} latencyMs={assistant.meta?.latencyMs} />
+  return <section className="space-y-4"><div className="he-panel-mascot"><AgentAvatar agent="assistant" size="lg" state={assistant.status === "sending" ? "thinking" : assistant.status === "error" ? "error" : assistant.meta ? "done" : "idle"} /><AgentChip agent="assistant" status={assistant.status === "sending" ? "typing…" : assistant.status === "error" ? "unavailable" : undefined} mock={assistant.meta?.mock} latencyMs={assistant.meta?.latencyMs} /></div>
     {!session.events.some((event) => event.type === "assistant_prompt") && <p className="text-he-muted">Ask about the code, or request a fix to review.</p>}
     {session.events.filter((event) => event.type === "assistant_prompt" || event.type === "assistant_response").map((event) => {
       const suggestion = session.suggestions.find((item) => item.id === event.data?.suggestionId);

@@ -4,6 +4,7 @@ import { useId, useState } from "react";
 import type { AssessmentConfig } from "@/lib/contracts";
 import { AccentCard, Button, NumberBadge, PillTitle } from "@/components/ui";
 import { t } from "@/lib/i18n";
+import { Mascot } from "@/components/ui/Mascot";
 
 export function RulesScreen({ assessment, title, onStart }: { assessment: AssessmentConfig; title: string; onStart?: () => void }) {
   const [acknowledged, setAcknowledged] = useState(false);
@@ -11,6 +12,7 @@ export function RulesScreen({ assessment, title, onStart }: { assessment: Assess
   const locale = assessment.locale;
   const disabled = !acknowledged || !onStart;
   return <AccentCard as="section" accent="room1" className="mx-auto max-w-3xl space-y-6 text-he-text">
+    <div className="he-rules-mascot"><Mascot /></div>
     <p className="font-mono text-xs uppercase tracking-widest text-he-blue">{t(locale, "rulesTitle")}</p>
     <PillTitle>{title}</PillTitle>
     <p className="font-mono text-sm text-he-muted">{t(locale, "minutesAvailable", { minutes: assessment.durationMin })}</p>

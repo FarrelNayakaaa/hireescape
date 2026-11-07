@@ -1,0 +1,77 @@
+.he-mascot {
+  display: inline-block;
+  flex-shrink: 0;
+  width: 100%;
+  aspect-ratio: 1;
+  background-image: url("/mascots/catfish-atlas.png");
+  background-size: 400% 500%;
+  background-repeat: no-repeat;
+}
+.he-agent-avatar .he-agent-mascot { width: 126%; position: absolute; inset: -13%; }
+.he-agent-avatar.he-agent-avatar--sm { width: 44px; height: 44px; }
+.he-agent-avatar.he-agent-avatar--md { width: 64px; height: 64px; }
+.he-agent-avatar.he-agent-avatar--lg { width: 104px; height: 104px; }
+.he-agent-avatar .he-agent-role-icon { position: absolute; bottom: -2px; left: -3px; width: 20px; height: 20px; padding: 3px; border: 1px solid var(--he-accent); border-radius: var(--he-radius-control); background: var(--he-surface); color: var(--he-accent); }
+.he-agent-avatar .he-agent-state-text { top: auto; bottom: -16px; font-size: 11px; }
+.he-panel-mascot { display: flex; flex-wrap: wrap; align-items: center; gap: 24px; padding: 12px 8px 20px; }
+.he-rules-mascot { width: 140px; margin-inline: auto; }
+.he-journey-layout { max-width: 1480px; margin-inline: auto; }
+.he-room-hall { position: relative; isolation: isolate; padding: 24px 40px 32px; overflow: hidden; }
+.he-room-hall::before { content: ""; position: absolute; inset: 0; z-index: -1; background: radial-gradient(ellipse at 50% 70%, color-mix(in srgb, var(--he-purple) 10%, transparent), transparent 65%); }
+.he-hall-intro { display: flex; align-items: center; justify-content: space-between; gap: 24px; max-width: 1160px; margin-inline: auto; }
+.he-hall-intro h1 { max-width: 780px; margin-block: 12px; font-size: clamp(28px, 2.5vw, 38px); line-height: 1.25; font-weight: 700; letter-spacing: -0.025em; }
+.he-hall-intro > div > p:last-child { max-width: 650px; line-height: 1.8; }
+.he-hall-companion { flex-shrink: 0; display: flex; flex-direction: column; align-items: center; }
+.he-hall-mascot { width: 128px; }
+.he-hall-companion .he-chip { gap: 8px; }
+.he-hall-doors { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: start; gap: clamp(20px, 4vw, 64px); max-width: 1080px; margin: 24px auto 0; }
+.he-hall-door { display: flex; flex-direction: column; align-items: stretch; gap: 22px; min-width: 0; padding: 0; background: none; border: 0; color: var(--he-text); text-align: center; cursor: pointer; }
+.he-hall-door:disabled { cursor: default; }
+.he-door-frame { position: relative; display: block; width: 100%; height: clamp(260px, 36vh, 360px); padding: 12px 12px 0; border: 2px solid var(--he-border); border-bottom: 0; border-radius: 100px 100px 0 0; background: var(--he-surface-2); perspective: 900px; }
+.he-door-slab { display: flex; position: relative; height: 100%; flex-direction: column; align-items: center; padding-top: 42px; overflow: hidden; border: 2px solid var(--he-border); border-bottom: 0; border-radius: 88px 88px 0 0; background: linear-gradient(120deg, var(--he-surface-2), var(--he-surface)); }
+.he-door-light { position: absolute; height: 7px; bottom: -4px; left: -10px; right: -10px; background: var(--he-border); }
+.he-door-number { font-family: var(--he-font-mono); font-size: 15px; letter-spacing: 0.3em; }
+.he-door-emblem { display: grid; place-items: center; width: 88px; height: 88px; margin-top: 26px; border: 1px solid var(--he-border); border-radius: var(--he-radius-pill); color: var(--he-muted); }
+.he-door-handle { position: absolute; right: 16px; top: 59%; width: 9px; height: 38px; border: 1px solid var(--he-border); border-radius: var(--he-radius-control); background: var(--he-surface-3); }
+.he-door-panels { position: absolute; inset: auto 24px 24px; height: 24%; border: 1px solid var(--he-border); border-radius: var(--he-radius-control); }
+.he-hall-door--available .he-door-frame, .he-hall-door--available .he-door-slab { border-color: var(--he-accent); }
+.he-hall-door--available .he-door-slab { background: linear-gradient(150deg, color-mix(in srgb, var(--he-accent) 12%, var(--he-surface)), var(--he-surface)); }
+.he-hall-door--available .he-door-emblem { color: var(--he-accent); border-color: color-mix(in srgb, var(--he-accent) 40%, var(--he-border)); }
+.he-hall-door--available .he-door-light { background: var(--he-accent); box-shadow: 0 0 30px color-mix(in srgb, var(--he-accent) 45%, transparent); }
+.he-hall-door--available .he-door-number, .he-hall-door--complete .he-door-emblem, .he-hall-door--complete .he-door-state { color: var(--he-accent); }
+.he-hall-door--complete .he-door-slab { transform: perspective(900px) rotateY(-20deg); transform-origin: left; }
+.he-hall-door--locked .he-door-frame { opacity: 0.55; }
+.he-door-caption { display: flex; flex-direction: column; gap: 10px; align-items: center; }
+.he-door-title { font-size: 21px; line-height: 1.35; font-weight: 600; }
+.he-door-state { display: flex; align-items: center; justify-content: center; gap: 6px; padding-top: 4px; font-size: 13px; line-height: 1.6; }
+.he-hall-door--available .he-door-state { color: var(--he-accent); }
+.he-key-reward { min-height: 660px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; padding: 44px 24px; text-align: center; }
+.he-key-reward > .he-eyebrow { color: var(--he-accent); }
+.he-key-reward h1 { font-size: clamp(30px, 4vw, 46px); font-weight: 700; line-height: 1.25; }
+.he-key-scene { position: relative; display: grid; place-items: center; }
+.he-reward-mascot { width: 260px; max-width: 100%; }
+.he-key-halo { position: absolute; inset: -20px; z-index: -1; background: radial-gradient(circle, color-mix(in srgb, var(--he-yellow) 16%, transparent), transparent 68%); }
+.he-reward-key { position: absolute; right: -12px; top: 15px; color: var(--he-yellow); }
+.he-reward-slots { display: flex; gap: 12px; margin-block: 4px 12px; }
+.he-key-slot { display: grid; place-items: center; width: 56px; height: 56px; border: var(--he-outline-width) solid var(--he-border); border-radius: var(--he-radius); color: var(--he-muted); }
+.he-key-slot--earned { border-color: var(--he-yellow); color: var(--he-yellow); background: color-mix(in srgb, var(--he-yellow) 8%, var(--he-surface)); }
+.he-door-transition { display: grid; position: fixed; inset: 0; z-index: 90; place-items: center; overflow: hidden; background: color-mix(in srgb, var(--he-bg) 30%, transparent); }
+.he-door-transition > span { position: relative; padding: 18px 26px; border: 1px solid var(--he-border); border-radius: var(--he-radius); background: var(--he-bg); color: var(--he-text); }
+.he-transition-half { position: absolute; top: 0; bottom: 0; width: 50%; border: 2px solid var(--he-border); background: linear-gradient(120deg, var(--he-surface-2), var(--he-bg)); }
+.he-transition-half--left { left: 0; border-right: 2px solid var(--he-orange); }
+.he-transition-half--right { right: 0; border-left: 2px solid var(--he-orange); }
+.he-escape-celebration { display: flex; flex-direction: column; align-items: center; justify-content: center; padding-block: 48px; text-align: center; }
+[data-theme="retro"] .he-hall-intro h1, [data-theme="retro"] .he-key-reward h1, [data-theme="retro"] .he-door-title { font-weight: 500; letter-spacing: normal; }
+[data-theme="retro"] .he-door-frame, [data-theme="retro"] .he-door-slab { border-radius: 0; }
+[data-theme="retro"] .he-door-light { box-shadow: none; }
+[data-theme="retro"] .he-room-hall::before, [data-theme="retro"] .he-key-halo { display: none; }
+@media (max-width: 1000px) {
+  .he-room-hall { padding-inline: 12px; }
+  .he-hall-doors { gap: 20px; }
+  .he-door-frame { height: 280px; }
+  .he-hall-mascot { width: 120px; }
+  .he-door-state { flex-wrap: wrap; font-size: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .he-hall-door--complete .he-door-slab { transform: none; }
+}
