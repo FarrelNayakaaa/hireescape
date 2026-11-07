@@ -11,6 +11,7 @@ import { ClaimList } from "../components/ClaimList";
 import { DecisionPanel } from "../components/DecisionPanel";
 import { evidenceTargetId } from "../lib/events";
 import { challenge, fixtureSession, secret } from "./fixtures";
+vi.mock("../components/ReplayEditor",()=>({ReplayEditor:({code}:{code:string})=><pre>{code}</pre>}));
 vi.mock("next/navigation",()=>({useRouter:()=>({push:vi.fn()})}));
 vi.mock("@/components/ui/environment",async(original)=>({...await original<typeof import("@/components/ui/environment")>(),useUiMotion:()=>({duration:.15,decorative:false})}));
 beforeEach(async()=>{
@@ -30,7 +31,7 @@ it("generates the mock report, drops one claim, and focuses event and code evide
  const session=await seed();render(<ReportPage sessionId={session.id}/>);fireEvent.click(await screen.findByRole("button",{name:"Generate analysis"}));
  expect(await screen.findByText("8 claims shown · 1 unverifiable claim removed")).toBeInTheDocument();expect(screen.queryByText(/CIRCUIT_BREAKER_EVIDENCE/)).not.toBeInTheDocument();
  fireEvent.click(screen.getByRole("button",{name:"e3 · triage_mark"}));expect(document.activeElement).toHaveAttribute("id",evidenceTargetId("event","e3"));expect(document.activeElement).toHaveAttribute("data-highlighted","true");expect(Element.prototype.scrollIntoView).toHaveBeenCalled();
- const chip=screen.getByRole("button",{name:/^L\d+$/});fireEvent.click(chip);const line=Number(chip.textContent?.slice(1));expect(document.activeElement).toHaveAttribute("id",evidenceTargetId("code_line",line));expect(screen.getByText("Final code · evidence locations").closest("details")).toHaveAttribute("open");
+ const chip=screen.getByRole("button",{name:/^L\d+$/});fireEvent.click(chip);const line=Number(chip.textContent?.slice(1));expect(document.activeElement).toBe(screen.getByRole("region",{name:"Session replay"}));expect(screen.getByText(new RegExp(`Final snapshot.*Line ${line} highlighted`))).toBeInTheDocument();
  expect(screen.getByRole("button",{name:"Regenerate analysis"})).toBeInTheDocument();
 });
 it("keeps objective and timeline visible if analysis is unavailable",async()=>{

@@ -1,0 +1,15 @@
+.replay { scroll-margin-top: 24px; }
+.editor { border: var(--he-outline-width) solid var(--he-border); border-radius: var(--he-radius); overflow: hidden; background: var(--he-surface); }
+.originAi { background: color-mix(in srgb, var(--he-purple) 12%, transparent); }
+.originAiEdited { border-left: 2px solid var(--he-purple); outline: 1px solid var(--he-purple); outline-offset: -1px; }
+.originPaste { border-left: 2px solid var(--he-yellow); outline: 1px solid var(--he-yellow); outline-offset: -1px; }
+.selectedLine { background: color-mix(in srgb, var(--he-blue) 18%, transparent) !important; border-left: 2px solid var(--he-blue); }
+.markers { display: flex; flex-wrap: wrap; gap: 6px; }
+.marker { padding: 5px 8px; border: var(--he-outline-width) solid var(--he-border); border-radius: var(--he-radius-pill); font-family: var(--he-font-mono); font-size: 12px; }
+.marker[data-kind="pass"] { color: var(--he-green); }
+.marker[data-kind="fail"] { color: var(--he-red); }
+.marker[data-kind="ai_apply"] { color: var(--he-text); border-color: var(--he-purple); }
+.marker[data-kind="inquisitor_question"] { color: var(--he-blue); }
+.marker[data-kind="candidate_answer"] { color: var(--he-text); }
+.marker[aria-current="true"] { outline: 2px solid var(--he-blue); outline-offset: 2px; }
+@media print { .replay { display: none !important; } }
