@@ -12,7 +12,7 @@ test("the landing page exposes the correct CTA destinations and ordered content"
   expect(screen.getByRole("link", { name: "I'm hiring" })).toHaveAttribute("href", "/manager/new");
   expect(screen.getByRole("link", { name: "Try the demo room" })).toHaveAttribute("href", "/manager");
   expect(screen.getByRole("heading", { level: 1, name: "HireEscape" })).toBeInTheDocument();
-  expect(screen.getAllByRole("heading", { level: 2 }).map((element) => element.textContent)).toEqual(["Three rooms", "Meet the agents", "Evidence, not verdicts"]);
+  expect(screen.getAllByRole("heading", { level: 2 }).map((element) => element.textContent)).toEqual(["Three rooms", "Meet the agents", "Evidence, not verdicts", "2026 Pricing Plans"]);
   expect(screen.getByText("SAMPLE REPORT · FICTIONAL SESSION")).toBeInTheDocument();
   expect(screen.getByText("Built at Regional Codex Hackathon Indonesia")).toBeInTheDocument();
   expect(screen.getByRole("banner")).toBeInTheDocument();

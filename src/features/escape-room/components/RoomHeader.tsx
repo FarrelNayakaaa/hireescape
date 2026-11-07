@@ -1,6 +1,6 @@
 import type { AssessmentConfig } from "@/lib/contracts";
 import { KeyCounter, RoomDoor, Timer, formatTime } from "@/components/game";
-import { AiModeBadge } from "@/components/ui";
+import { IntegrityHud } from "@/features/proctoring";
 import { t } from "@/lib/i18n";
 import type { FlowState } from "../lib/flow";
 
@@ -19,8 +19,9 @@ export function RoomHeader({ assessment, title, flow }: { assessment: Assessment
       </ol>
     </nav>
     <KeyCounter keys={flow.completedRooms.length} label={t(locale, "keys", { count: flow.completedRooms.length })} earnedLabel={t(locale, "earnedKey")} lockedLabel={t(locale, "lockedKey")} />
+    <IntegrityHud />
     <h1 className="min-w-0 flex-1 truncate text-sm font-semibold" title={title}>{title}</h1>
-    <AiModeBadge on={assessment.aiAssistance} />
+    <span className={`he-chip he-ai-mode ${assessment.aiAssistance ? "he-ai-mode--on" : ""}`}>{t(locale, assessment.aiAssistance ? "aiOn" : "aiOff")}</span>
     {flow.startedAtMs !== null ? <Timer endsAt={flow.startedAtMs + assessment.durationMin * 60_000} durationMs={assessment.durationMin * 60_000}
       label={t(locale, "timerLabel")} tenMinuteLabel={t(locale, "tenMinutes")} twoMinuteLabel={t(locale, "twoMinutes")} />
       : <span className="font-mono" aria-label={t(locale, "timerLabel")}>{formatTime(assessment.durationMin * 60_000)}</span>}

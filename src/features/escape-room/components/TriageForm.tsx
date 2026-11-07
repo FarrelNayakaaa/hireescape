@@ -4,7 +4,7 @@ import { AccentCard, Button } from "@/components/ui";
 import type { AssessmentConfig, DefectType } from "@/lib/contracts";
 import { t } from "@/lib/i18n";
 import type { MarkedRange } from "../lib/triageCheck";
-import { triageHints } from "../lib/triageHints";
+import { triageHint } from "../lib/triageHints";
 export function TriageForm({ marked, attempts, defectType, onSubmit, disabled, locale }: {
   marked: MarkedRange | null; attempts: number; defectType: DefectType; onSubmit(hypothesis: string): void; disabled: boolean; locale: AssessmentConfig["locale"];
 }) {
@@ -16,6 +16,6 @@ export function TriageForm({ marked, attempts, defectType, onSubmit, disabled, l
     <label className="block space-y-2">{t(locale, "hypothesis")}<textarea value={hypothesis} onChange={(event) => setHypothesis(event.target.value)} disabled={disabled} className="w-full rounded border border-he-border bg-he-surface-2 p-3" /></label>
     <Button disabled={disabled || !validRange || hypothesis.trim().length < 15} onClick={() => onSubmit(hypothesis.trim())}>{t(locale, "submitTriage")}</Button>
     {(!validRange || hypothesis.trim().length < 15) && <p className="text-sm text-he-muted">{t(locale, "triageRequirements")}</p>}
-    {attempts > 0 && <p role="status">{t(locale, "triageHint", { hint: triageHints[defectType] })}</p>}
+    {attempts > 0 && <p role="status">{t(locale, "triageHint", { hint: triageHint(defectType, locale) })}</p>}
   </AccentCard>;
 }

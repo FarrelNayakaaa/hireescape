@@ -339,6 +339,23 @@ button.he-evidence-chip { cursor: pointer; }
 .he-dropped-claim s { text-decoration-color: var(--he-muted); }
 .he-site-footer { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; padding-block: 28px; border-top: 1px solid var(--he-border); }
 .he-site-footer > span { font-weight: 700; }
+.he-pricing-panel { padding: 16px; border: var(--he-outline-width) solid var(--he-border); border-radius: var(--he-radius); background: var(--he-surface); }
+.he-pricing-currency { display: flex; justify-content: flex-end; padding: 0 0 8px; }
+.he-pricing-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.he-pricing-plan { min-width: 0; padding: 24px; border: var(--he-outline-width) solid transparent; border-radius: var(--he-radius); }
+.he-pricing-plan--recommended { border-color: var(--he-green); }
+.he-pricing-plan-heading { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; min-height: 28px; }
+.he-pricing-plan h3 { font-size: 18px; line-height: 26px; font-weight: 700; }
+.he-pricing-recommended { color: var(--he-green); border-color: color-mix(in srgb, var(--he-green) 35%, var(--he-border)); background: color-mix(in srgb, var(--he-green) 10%, var(--he-surface)); }
+.he-pricing-price { margin-block: 20px 10px; font-size: 28px; line-height: 32px; }
+.he-pricing-features { display: grid; gap: 12px; margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--he-border); list-style: none; }
+.he-pricing-features li { display: flex; align-items: flex-start; gap: 10px; }
+.he-pricing-features li > svg { flex-shrink: 0; margin-top: 4px; color: var(--he-green); }
+[data-theme="retro"] .he-pricing-plan h3 { font-weight: 500; }
+@media (max-width: 767px) {
+  .he-pricing-grid { grid-template-columns: 1fr; }
+  .he-pricing-plan { padding: 20px; }
+}
 [data-theme="retro"] .he-brand, [data-theme="retro"] .he-hero-subtitle, [data-theme="retro"] .he-room-description, [data-theme="retro"] .he-site-footer > span { font-weight: 500; letter-spacing: normal; }
 [data-theme="retro"] .he-section-heading h2, [data-theme="retro"] .he-evidence-intro h2, [data-theme="retro"] .he-room-card h3, [data-theme="retro"] .he-agent-card h3, [data-theme="retro"] .he-viewport-blocker h1 { font-weight: 500; letter-spacing: normal; }
 [data-theme="retro"] .he-theme-option span, [data-theme="retro"] .he-evidence-promise { font-size: 14px; line-height: 22px; }
