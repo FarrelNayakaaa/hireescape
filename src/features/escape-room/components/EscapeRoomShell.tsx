@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useAssessmentBundle } from "@/features/assessment";
 import { findActiveSession, useSessionStore } from "@/features/session";
+import { ProctoringGate } from "@/features/proctoring";
 import { t } from "@/lib/i18n";
 import { useSessionHydration } from "../hooks/useSessionHydration";
 import { AssessmentState } from "./AssessmentState";
@@ -33,9 +34,9 @@ export function EscapeRoomShell({ assessmentId }: { assessmentId: string }) {
     <div className="hidden lg:block">{hydration.error ? <AssessmentState state="error" locale={locale} onRetry={() => void hydration.retry()} />
       : status === "loading" || !hydration.hydrated ? <AssessmentState state="loading" locale={locale} />
       : !bundle ? <AssessmentState state="not_found" locale={locale} />
-      : session && (session.endedAt || session.events.some((event) => event.type === "rules_ack")) ? <RoomWorkspace key={session.id} assessment={bundle.assessment} challenge={bundle.challenge} session={session} />
+      : <ProctoringGate assessment={bundle.assessment} session={session ?? null}>{session && (session.endedAt || session.events.some((event) => event.type === "rules_ack")) ? <RoomWorkspace key={session.id} assessment={bundle.assessment} challenge={bundle.challenge} session={session} />
       : <>{startError && <p role="alert" className="mb-4 text-center text-he-red">{t(locale, "startError")}</p>}
-        <RulesScreen assessment={bundle.assessment} title={bundle.challenge.title} onStart={start} /></>}
+        <RulesScreen assessment={bundle.assessment} title={bundle.challenge.title} onStart={start} /></>}</ProctoringGate>}
     </div>
   </main>;
 }
