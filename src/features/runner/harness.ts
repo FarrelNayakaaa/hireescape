@@ -88,10 +88,10 @@ export function createFakes() {
 
 // ---------- module loading ----------
 export function loadModule(code: string): Record<string, unknown> {
-  const module = { exports: {} };
+  const candidateModule = { exports: {} };
   const noRequire = () => { throw new Error("require() is not available in this sandbox"); };
   const fn = new Function("module", "exports", "require", `"use strict";\n${code}\n;return module.exports;`);
-  return fn(module, module.exports, noRequire) as Record<string, unknown>;
+  return fn(candidateModule, candidateModule.exports, noRequire) as Record<string, unknown>;
 }
 
 function withTimeout(promise: Promise<unknown>, ms: number) {
