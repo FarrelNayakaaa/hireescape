@@ -7,8 +7,9 @@ import { Button } from "@/components/ui";
 import { t } from "@/lib/i18n";
 import { RoomNavigation } from "./RoomNavigation";
 
-export function RunBar({ room, running, unlocked, hidden, recorded, onRun, onContinue, locale }: {
+export function RunBar({ room, running, unlocked, hidden, recorded, onRun, onContinue, onCheck, checking = false, checkLimit = false, locale }: {
   room: Room; running: boolean; unlocked: boolean; hidden: RunResult | null; recorded: EventDataMap["test_run"] | null;
+  onCheck?: () => void; checking?: boolean; checkLimit?: boolean;
   onRun(): void; onContinue?: () => void; locale: AssessmentConfig["locale"];
 }) {
   const reasonId = useId();
@@ -17,8 +18,8 @@ export function RunBar({ room, running, unlocked, hidden, recorded, onRun, onCon
       <div><Button onClick={onRun} disabled={running || unlocked || room === 3} loading={running} kbd="⌘↵"
         aria-describedby={running || unlocked || room === 3 ? `${reasonId}-run` : undefined}>{t(locale, "runTests")}</Button>
         {(running || unlocked || room === 3) && <p id={`${reasonId}-run`} className="mt-2 text-xs text-he-muted">{t(locale, running ? "running" : "codeSealed")}</p>}</div>
-      <div><Button variant="secondary" disabled aria-describedby={`${reasonId}-check`}>{t(locale, "check")}</Button>
-        <p id={`${reasonId}-check`} className="mt-2 text-xs text-he-muted">{t(locale, "checkDeferred")}</p></div>
+      <div><Button variant="secondary" onClick={onCheck} loading={checking} disabled={!onCheck || room !== 2 || running || checking || checkLimit} aria-describedby={`${reasonId}-check`}>{t(locale, "check")}</Button>
+        <p id={`${reasonId}-check`} className="mt-2 text-xs text-he-muted">{checkLimit ? "The Inquisitor has enough for now" : checking ? "Inquisitor is thinking…" : room !== 2 ? t(locale, "inquisitorRoom1") : onCheck ? "Ask a grounded question about your code" : t(locale, "checkDeferred")}</p></div>
       <HiddenTestLocks results={hidden} recordedCounts={recorded && room === 2 ? recorded.hidden : undefined}
         summary={t(locale, "testCounts", { passed: hidden?.passed ?? recorded?.hidden.passed ?? 0, total: hidden?.total ?? recorded?.hidden.total ?? 0, suite: t(locale, "hiddenSuite") })}
         emptyLabel={t(locale, "hiddenPending")} openLabel={t(locale, "vaultOpen")}

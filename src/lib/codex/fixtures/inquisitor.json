@@ -1,0 +1,38 @@
+{
+  "nudge": {
+    "skip": false,
+    "question": "For revision {revision} of this operation on line {line}, what assumption could change its outcome?",
+    "groundedIn": {
+      "line": "{line}",
+      "quote": "{quote}"
+    },
+    "intent": "probe_reasoning"
+  },
+  "defence0": {
+    "skip": false,
+    "question": "What failure could propagate from the operation on line {line} under sustained load?",
+    "groundedIn": {
+      "line": "{line}",
+      "quote": "{quote}"
+    },
+    "intent": "failure_mode"
+  },
+  "defence1": {
+    "skip": false,
+    "question": "Which operational signal would distinguish a dependency problem at line {line} from an invalid request?",
+    "groundedIn": {
+      "line": "{line}",
+      "quote": "{quote}"
+    },
+    "intent": "observability"
+  },
+  "defence2": {
+    "skip": false,
+    "question": "What trade-off does the decision on line {line} introduce as traffic grows?",
+    "groundedIn": {
+      "line": "{line}",
+      "quote": "{quote}"
+    },
+    "intent": "tradeoff"
+  }
+}
