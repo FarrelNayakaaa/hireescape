@@ -46,7 +46,6 @@ export function PlatformShell({ children }: { children: ReactNode }) {
     <div className="he-shell-tools">
       <fieldset className="he-theme-selector" data-ready={environment.ready} disabled={!environment.ready}>
         <legend className="sr-only">Theme</legend>
-        <span className="he-theme-caption" aria-hidden="true">Theme</span>
         {(["default", "retro"] as const).map((theme) => <label key={theme} className="he-theme-option">
           <input className="sr-only" type="radio" name="he-theme" value={theme} checked={environment.theme === theme} onChange={() => setTheme(theme)} />
           <span>{theme === "default" ? "Default" : "Retro"}</span>

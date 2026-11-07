@@ -2,7 +2,7 @@
 import { act, cleanup, render, screen } from "@testing-library/react";
 import { afterEach, expect, it, vi } from "vitest";
 import { DemoReport } from "../components/DemoReport";
-import { AssessmentList } from "@/features/assessment";
+import { AssessmentList } from "@/features/assessment/manager/index";
 import { useAgentConsole } from "@/lib/codex/agentConsole";
 vi.mock("next/navigation",()=>({useRouter:()=>({push:vi.fn()})}));
 vi.mock("../components/ReplayEditor",()=>({ReplayEditor:({code}:{code:string})=><pre data-testid="demo-code">{code}</pre>}));

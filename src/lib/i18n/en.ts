@@ -145,6 +145,7 @@ export const en = {
   timeoutThanks: "Time's up — your work so far has been submitted. Thank you.",
   escapedTime: "You escaped in {time}",
   escapedThanks: "Your session has been sent to a human reviewer. Thank you.",
+  backToHome: "Back to home",
   savingFinal: "Saving your final test results…",
 } as const;
 

@@ -10,7 +10,7 @@ import { buildAnalysisRequest } from "../lib/buildRequest";
 import { computeObjectiveMetrics } from "../lib/metrics";
 import { verifyClaims } from "../lib/verifyClaims";
 import { deriveCompetency } from "../lib/competency";
-import { sanitizeSummary } from "../lib/sanitize";
+import { summarizeEvidence } from "../lib/summarize";
 import { getReportPersistenceWarning, hydrateReports, reportCacheKey, useReportHydration, useReportStore } from "../store";
 export type AnalysisContext={challenge:Challenge;secret:ChallengeSecret};
 export type AnalysisState={status:"idle"|"loading"|"ready"|"error";report:Report|null;error:string|null};
@@ -29,7 +29,7 @@ function verifyCached(report:Report,session:Session):Report {
  const objective=computeObjectiveMetrics(session,{id:session.challengeId});
  const raw=report.claims.map(c=>({...c,evidence:c.evidence.map(e=>({...e,line:e.line??null,eventId:e.eventId??null}))}));
  const verified=verifyClaims(raw,session,objective);
- return {...report,aiAssistance:session.aiAssistance,objective,claims:verified.claims,droppedClaims:report.droppedClaims+verified.droppedClaims,competency:deriveCompetency(verified.claims,objective,session.aiAssistance),summary:sanitizeSummary(report.summary),disclaimer:REPORT_DISCLAIMER};
+ return {...report,aiAssistance:session.aiAssistance,objective,claims:verified.claims,droppedClaims:report.droppedClaims+verified.droppedClaims,competency:deriveCompetency(verified.claims,objective,session.aiAssistance),summary:summarizeEvidence(objective,verified.claims.length),disclaimer:REPORT_DISCLAIMER};
 }
 export function useAnalysis(session:Session,context?:AnalysisContext){
  const hydrated=useReportHydration();
@@ -51,7 +51,7 @@ export function useAnalysis(session:Session,context?:AnalysisContext){
     const response=await postAgent<{output:unknown;meta?:AgentMeta}>("/api/analyst",input);
     const output=AnalystOutput.parse(response.output);
     const verified=verifyClaims(output.claims,session,input.objective);
-    const report:Report={sessionId:session.id,generatedAt:new Date().toISOString(),promptVersion:ANALYST_PROMPT_VERSION,aiAssistance:session.aiAssistance,objective:input.objective,...verified,competency:deriveCompetency(verified.claims,input.objective,session.aiAssistance),summary:sanitizeSummary(output.summary),disclaimer:REPORT_DISCLAIMER};
+    const report:Report={sessionId:session.id,generatedAt:new Date().toISOString(),promptVersion:ANALYST_PROMPT_VERSION,aiAssistance:session.aiAssistance,objective:input.objective,...verified,competency:deriveCompetency(verified.claims,input.objective,session.aiAssistance),summary:summarizeEvidence(input.objective,verified.claims.length),disclaimer:REPORT_DISCLAIMER};
     useReportStore.getState().save(report);
     setState({sessionId:session.id,status:"ready",report,error:null});return report;
    }catch{

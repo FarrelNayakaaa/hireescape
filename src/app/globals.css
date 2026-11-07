@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "./journey.css";
 
 :root {
   /* surfaces */
@@ -281,9 +282,11 @@ button.he-evidence-chip { cursor: pointer; }
 .he-application[hidden] { display: none !important; }
 .skip-link[hidden] { display: none !important; }
 .he-shell-tools { position: absolute; z-index: 40; top: 24px; right: max(24px, calc((100vw - 1248px) / 2)); max-width: calc(100vw - 32px); }
-.he-theme-selector { display: flex; align-items: center; flex-wrap: wrap; gap: 4px; padding: 4px; border: var(--he-outline-width) solid var(--he-border); border-radius: var(--he-radius-pill); background: var(--he-surface); }
+.he-theme-selector { display: flex; align-items: center; flex-wrap: nowrap; gap: 4px; min-inline-size: 0; margin: 0; padding: 4px; border: var(--he-outline-width) solid var(--he-border); border-radius: var(--he-radius-pill); background: var(--he-surface); }
+/* Keep the native radios keyboard-accessible even when utility CSS is unavailable. */
+.he-theme-selector > legend, .he-theme-option > input { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 .he-theme-caption { padding: 4px 8px; color: var(--he-muted); font-size: 13px; line-height: 20px; }
-.he-theme-option { cursor: pointer; }
+.he-theme-option { display: inline-flex; cursor: pointer; }
 .he-theme-option span { display: block; padding: 5px 12px; font-size: 13px; line-height: 20px; border-radius: var(--he-radius-pill); color: var(--he-muted); }
 .he-theme-option input:checked + span { color: var(--he-bg); background: var(--he-text); }
 .he-theme-option input:focus-visible + span { outline: 2px solid var(--he-blue); outline-offset: 2px; }
@@ -310,6 +313,23 @@ button.he-evidence-chip { cursor: pointer; }
 .he-hero-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 32px; }
 .he-hero-actions .he-button { min-height: 48px; padding: 12px 24px; }
 .he-hero-note { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 24px; }
+.he-landing-mascots { position: absolute; inset: 0; pointer-events: none; user-select: none; }
+.he-landing-mascot { position: absolute; width: clamp(300px, 24vw, 420px); display: flex; align-items: center; flex-direction: column; gap: 14px; }
+.he-landing-mascot--left { left: 0; top: 52px; }
+.he-landing-mascot--right { right: 0; bottom: 48px; }
+.he-mascot-greeting { position: relative; padding: 7px 14px; border: var(--he-outline-width) solid var(--he-orange); border-radius: var(--he-radius-control); background: var(--he-surface); color: var(--he-text); font-size: 14px; line-height: 22px; white-space: nowrap; }
+.he-mascot-greeting::after { content: ""; position: absolute; left: calc(50% - 5px); bottom: -6px; width: 10px; height: 10px; background: var(--he-surface); border-right: var(--he-outline-width) solid var(--he-orange); border-bottom: var(--he-outline-width) solid var(--he-orange); transform: rotate(45deg); }
+.he-mascot-image { display: block; width: 100%; height: auto; }
+.he-landing-mascot--left .he-mascot-image { transform: translateX(-45%) rotate(12deg); }
+.he-landing-mascot--right .he-mascot-image { transform: translateX(45%) rotate(-12deg); }
+.he-landing-mascot--left .he-mascot-greeting { align-self: flex-start; margin-left: 16px; }
+.he-landing-mascot--right .he-mascot-greeting { align-self: flex-end; margin-right: 16px; }
+@media (max-width: 1279px) {
+  .he-landing-mascot { width: 200px; gap: 10px; }
+  .he-landing-mascot--left { top: 20px; }
+  .he-landing-mascot--right { top: 20px; bottom: auto; }
+  .he-mascot-greeting { padding: 4px 8px; font-size: 13px; line-height: 20px; }
+}
 .he-landing-section { padding-block: 64px; }
 .he-landing-section + .he-landing-section { border-top: 1px solid var(--he-border); }
 .he-section-heading { margin-bottom: 28px; }
@@ -339,6 +359,23 @@ button.he-evidence-chip { cursor: pointer; }
 .he-dropped-claim s { text-decoration-color: var(--he-muted); }
 .he-site-footer { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; padding-block: 28px; border-top: 1px solid var(--he-border); }
 .he-site-footer > span { font-weight: 700; }
+.he-pricing-panel { padding: 16px; border: var(--he-outline-width) solid var(--he-border); border-radius: var(--he-radius); background: var(--he-surface); }
+.he-pricing-currency { display: flex; justify-content: flex-end; padding: 0 0 8px; }
+.he-pricing-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.he-pricing-plan { min-width: 0; padding: 24px; border: var(--he-outline-width) solid transparent; border-radius: var(--he-radius); }
+.he-pricing-plan--recommended { border-color: var(--he-green); }
+.he-pricing-plan-heading { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; min-height: 28px; }
+.he-pricing-plan h3 { font-size: 18px; line-height: 26px; font-weight: 700; }
+.he-pricing-recommended { color: var(--he-green); border-color: color-mix(in srgb, var(--he-green) 35%, var(--he-border)); background: color-mix(in srgb, var(--he-green) 10%, var(--he-surface)); }
+.he-pricing-price { margin-block: 20px 10px; font-size: 28px; line-height: 32px; }
+.he-pricing-features { display: grid; gap: 12px; margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--he-border); list-style: none; }
+.he-pricing-features li { display: flex; align-items: flex-start; gap: 10px; }
+.he-pricing-features li > svg { flex-shrink: 0; margin-top: 4px; color: var(--he-green); }
+[data-theme="retro"] .he-pricing-plan h3 { font-weight: 500; }
+@media (max-width: 767px) {
+  .he-pricing-grid { grid-template-columns: 1fr; }
+  .he-pricing-plan { padding: 20px; }
+}
 [data-theme="retro"] .he-brand, [data-theme="retro"] .he-hero-subtitle, [data-theme="retro"] .he-room-description, [data-theme="retro"] .he-site-footer > span { font-weight: 500; letter-spacing: normal; }
 [data-theme="retro"] .he-section-heading h2, [data-theme="retro"] .he-evidence-intro h2, [data-theme="retro"] .he-room-card h3, [data-theme="retro"] .he-agent-card h3, [data-theme="retro"] .he-viewport-blocker h1 { font-weight: 500; letter-spacing: normal; }
 [data-theme="retro"] .he-theme-option span, [data-theme="retro"] .he-evidence-promise { font-size: 14px; line-height: 22px; }

@@ -5,7 +5,7 @@ import nextTs from "eslint-config-next/typescript";
 // Every override receives the full policy so overlapping groups retain all restrictions.
 function importPolicy({ allowOpenAI = false, blockFeatures = false, blockSecrets = false } = {}) {
   const patterns = [{
-    regex: "^@/features/(?!(?:runner/harness|session/lib/provenance)$)[^/]+/(?!index$)",
+    regex: "^@/features/(?!(?:assessment/manager/index|runner/harness|session/lib/provenance)$)[^/]+/(?!index$)",
     caseSensitive: true,
     message: "Import features through their public root or index; only harness and provenance are exceptions.",
   }];
@@ -22,6 +22,10 @@ function importPolicy({ allowOpenAI = false, blockFeatures = false, blockSecrets
     });
   }
   if (blockSecrets) {
+    patterns.push({
+      regex: "^@/features/assessment/manager(?:/|$)", caseSensitive: true,
+      message: "Candidate-side code must use the public assessment bundle API.",
+    });
     patterns.push({
       regex: "^@challenges/secrets(?:/|$)", caseSensitive: true,
       message: "Candidate-side code must never import challenge secrets.",
