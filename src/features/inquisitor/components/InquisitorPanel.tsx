@@ -8,7 +8,7 @@ export function InquisitorPanel({ session, thinking, meta, onLine }: { session: 
   const questions = session.events.filter((event) => event.type === "inquisitor_question");
   const last = questions.at(-1);
   const canAnswer = last && last.data?.mode === "nudge" && !session.events.some((event) => event.type === "candidate_answer" && event.data?.questionEventId === last.id);
-  return <section className="space-y-4"><AgentChip agent="inquisitor" status={thinking ? "thinking…" : undefined} mock={meta?.mock} latencyMs={meta?.latencyMs} />
+  return <section className="space-y-4"><div className="he-panel-mascot"><AgentAvatar agent="inquisitor" size="lg" state={thinking ? "thinking" : last ? "done" : "idle"} /><AgentChip agent="inquisitor" status={thinking ? "thinking…" : undefined} mock={meta?.mock} latencyMs={meta?.latencyMs} /></div>
     {!questions.length && <p className="text-he-muted">The Inquisitor is watching your changes. Press Check ✦ anytime.</p>}
     {questions.map((question) => <div key={question.id} className="space-y-2 rounded border border-he-border p-4"><AgentAvatar agent="inquisitor" size="sm" /><p>{question.text}</p><EvidenceChip kind="code_line" label={`L${question.data?.line}`} onClick={() => onLine(Number(question.data?.line))} />
       <blockquote className="whitespace-pre-wrap font-mono text-xs text-he-muted">{String(question.data?.quote ?? "")}</blockquote>

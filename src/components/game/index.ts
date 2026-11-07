@@ -6,3 +6,5 @@ export { IncidentTicket } from "./IncidentTicket";
 export { HiddenTestLocks } from "./HiddenTestLocks";
 export { RoomIntroCard } from "./RoomIntroCard";
 export { DoorOpenTransition } from "./DoorOpenTransition";
+export { RoomHall } from "./RoomHall";
+export { KeyReward } from "./KeyReward";

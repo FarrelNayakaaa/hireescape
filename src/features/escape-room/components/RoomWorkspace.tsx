@@ -6,7 +6,7 @@ import { getSession, useSessionStore, type EditorRecorder } from "@/features/ses
 import { AssistantPanel, useAssistant } from "@/features/assistant";
 import { InquisitorPanel, useInquisitor } from "@/features/inquisitor";
 import { AccentCard, Button } from "@/components/ui";
-import { DoorOpenTransition, RoomIntroCard } from "@/components/game";
+import { KeyReward, RoomHall } from "@/components/game";
 import { t } from "@/lib/i18n";
 import { useRoomTests } from "../hooks/useRoomTests";
 import { deriveFlow, initialRoomUiState, roomUiReducer } from "../lib/flow";
@@ -21,6 +21,7 @@ import { EditorPane } from "./EditorPane";
 import { RoomHeader } from "./RoomHeader";
 import { RightPanel } from "./RightPanel";
 import { RunBar } from "./RunBar";
+import { journeyCopy } from "./journeyCopy";
 
 export function RoomWorkspace({ assessment, challenge, session }: { assessment: AssessmentConfig; challenge: Challenge; session: Session }) {
   const flow = deriveFlow(session.events, assessment, { startedAt: session.startedAt });
@@ -28,6 +29,8 @@ export function RoomWorkspace({ assessment, challenge, session }: { assessment: 
   const lastMark = [...session.events].reverse().find((event) => event.type === "triage_mark");
   const [marked, setMarked] = useState<MarkedRange | null>(() => lastMark ? [Number(lastMark.data?.start), Number(lastMark.data?.end)] : null);
   const [transitioning, setTransitioning] = useState(false);
+  const [enteredRoom, setEnteredRoom] = useState<Room | null>(null);
+  const workspace = useRef<HTMLDivElement>(null);
   const [showDiff, setShowDiff] = useState(false);
   const markLine = useCallback((line: number) => setMarked((current) => toggleMarkedLine(current, line)), []);
   const timer = useSessionTimer(session, assessment, challenge, room);
@@ -42,20 +45,21 @@ export function RoomWorkspace({ assessment, challenge, session }: { assessment: 
   const editorReady = useCallback((bridge: EditorRecorder | null) => { editorBridge.current = bridge; }, []);
   const [assistantTyping, setAssistantTyping] = useState(false);
   const getRecorder = useCallback(() => editorBridge.current, []);
-  const assistant = useAssistant({ assessment, challenge, session, room, disabled: unlocked || run.status === "running" || timer.expired, getRecorder });
+  const assistant = useAssistant({ assessment, challenge, session, room, disabled: enteredRoom !== room || transitioning || unlocked || run.status === "running" || timer.expired, getRecorder });
   const getEditor = useCallback(() => editorBridge.current?.getEditor() ?? null, []);
-  const inquisitor = useInquisitor({ assessment, challenge, session, room, testing: run.status === "running" || timer.expired, assistantTyping: assistantTyping && ui.activeTab === "assistant" && room === 2, getEditor });
+  const inquisitor = useInquisitor({ assessment, challenge, session, room, testing: enteredRoom !== room || transitioning || run.status === "running" || timer.expired, assistantTyping: assistantTyping && ui.activeTab === "assistant" && room === 2, getEditor });
   const executeRun = run.run;
   const recorded = lastRunSummary(session);
   const hash = run.codeHash ?? recorded?.codeHash;
   const stale = Boolean(hash && hash !== codeHash(session.finalCode));
   const terminal = Boolean(session.endedAt);
   const locale = assessment.locale;
+  useEffect(() => { if (enteredRoom === room) workspace.current?.focus(); }, [enteredRoom, room]);
   const runTests = useCallback(() => {
+    if (enteredRoom !== room) return;
     dispatch({ type: "select_tab", tab: "tests" });
     void executeRun();
-  }, [executeRun]);
-  const dismissIntro = useCallback(() => dispatch({ type: "dismiss_intro", room }), [room]);
+  }, [executeRun, enteredRoom, room]);
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
       if (event.key !== "Enter" || !(event.metaKey || event.ctrlKey) || terminal || unlocked || room === 3) return;
@@ -66,14 +70,6 @@ export function RoomWorkspace({ assessment, challenge, session }: { assessment: 
     window.addEventListener("keydown", onKey, true);
     return () => window.removeEventListener("keydown", onKey, true);
   }, [room, runTests, terminal, unlocked]);
-  const enteredRoom2 = useCallback(() => {
-    const current = getSession(session.id);
-    if (current && !current.endedAt && !current.events.some((event) => event.type === "room_enter" && event.data?.room === 2)) useSessionStore.getState().record(session.id, { type: "room_enter", room: 2, data: { room: 2 } });
-    setTransitioning(false);
-  }, [session.id, setTransitioning]);
-  useEffect(() => {
-    if (room === 2 && !transitioning && !session.endedAt && !session.events.some((event) => event.type === "room_enter" && event.data?.room === 2)) useSessionStore.getState().record(session.id, { type: "room_enter", room: 2, data: { room: 2 } });
-  }, [room, session.id, session.endedAt, session.events, transitioning]);
   const submitTriage = (hypothesis: string) => {
     const current = getSession(session.id);
     if (!current || current.endedAt || timer.expired || transitioning || triageResults.length >= 3 || hypothesis.trim().length < 15) return;
@@ -98,23 +94,32 @@ export function RoomWorkspace({ assessment, challenge, session }: { assessment: 
       store.finish(session.id, "escaped", current.finalCode);
     }
   };
-  const next = () => {
-    const store = useSessionStore.getState();
-    const current = store.sessions[session.id];
-    if (!current || current.endedAt) return;
-    if (room === 1) {
-      store.record(session.id, { type: "room_complete", room: 1, data: { room: 1, durationSec: roomDurationSec(current, 1, Date.now()) } });
-      store.record(session.id, { type: "room_enter", room: 2, data: { room: 2 } });
-    } else if (room === 2 && unlocked && !flow.room3Entered) store.record(session.id, { type: "room_enter", room: 3, data: { room: 3 } });
+  const enterRoom = (destination: Room) => {
+    const current = getSession(session.id);
+    if (!current || current.endedAt || timer.expired || destination !== flow.room || flow.completedRooms.includes(destination)) return;
+    if (!current.events.some((event) => event.type === "room_enter" && event.data?.room === destination)) {
+      useSessionStore.getState().record(session.id, { type: "room_enter", room: destination, data: { room: destination } });
+    }
+    setEnteredRoom(destination);
+    dispatch({ type: "select_tab", tab: "brief" });
+  };
+  const collectKey = () => {
+    setEnteredRoom(null);
+    setTransitioning(false);
   };
   if (session.endReason === "escaped") return <EscapedScreen session={session} locale={locale} />;
   if (session.endReason === "timeout") return <TimeoutScreen locale={locale} />;
   if (terminal) return <AccentCard accent="neutral"><h1>{t(locale, "sessionEnded")}</h1><p className="mt-4 text-he-muted">{t(locale, "sessionSaved")}</p></AccentCard>;
-  return <div className="mx-auto min-w-0 max-w-[1920px] space-y-4 xl:min-w-[1232px]">
-    {transitioning && <DoorOpenTransition onComplete={enteredRoom2} label={t(locale, "enteringRoom")} />}
+  if (transitioning || (unlocked && enteredRoom === 2)) return <div className="he-journey-layout">
     <RoomHeader assessment={assessment} title={challenge.title} flow={{ ...flow, room }} />
-    {!ui.dismissedIntros.includes(room) && <RoomIntroCard key={room} room={room} title={t(locale, `room${room}Name`)} goal={t(locale, `room${room}Goal`)}
-      skipLabel={t(locale, "skipIntro")} continueLabel={t(locale, "dismissIntro")} onDismiss={dismissIntro} />}
+    <KeyReward room={transitioning ? 1 : 2} copy={journeyCopy[locale]} onCollect={collectKey} />
+  </div>;
+  if (enteredRoom !== room) return <div className="he-journey-layout">
+    <RoomHeader assessment={assessment} title={challenge.title} flow={flow} />
+    <RoomHall availableRoom={flow.room === 0 ? 1 : flow.room} completedRooms={flow.completedRooms} copy={journeyCopy[locale]} onEnter={enterRoom} />
+  </div>;
+  return <div ref={workspace} tabIndex={-1} className="mx-auto min-w-0 max-w-[1920px] space-y-4">
+    <RoomHeader assessment={assessment} title={challenge.title} flow={{ ...flow, room }} />
     {room === 1 && <TriageForm marked={marked} attempts={triageResults.length} defectType={challenge.defectType} onSubmit={submitTriage} disabled={timer.expired || transitioning} locale={locale} />}
     {room === 3 && <><Button variant="secondary" onClick={() => setShowDiff((current) => !current)}>{t(locale, showDiff ? "viewCode" : "viewDiff")}</Button><DefencePanel questions={questions} answers={answers} onAnswer={answer} disabled={timer.expired} locale={locale} /></>}
     {timer.expired && <p role="status">{t(locale, "savingFinal")}</p>}
@@ -131,6 +136,6 @@ export function RoomWorkspace({ assessment, challenge, session }: { assessment: 
     </div>
     <RunBar room={room} running={run.status === "running" || timer.expired} unlocked={unlocked} hidden={run.hidden} recorded={recorded}
       onCheck={() => { dispatch({ type: "select_tab", tab: "inquisitor" }); void inquisitor.check(); }} checking={inquisitor.thinking} checkLimit={inquisitor.atLimit}
-      onRun={runTests} onContinue={room < 3 ? next : undefined} locale={locale} />
+      onRun={runTests} onContinue={room < 3 ? collectKey : undefined} locale={locale} />
   </div>;
 }

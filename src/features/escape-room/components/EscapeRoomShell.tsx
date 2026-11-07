@@ -28,7 +28,7 @@ export function EscapeRoomShell({ assessmentId }: { assessmentId: string }) {
       store.record(id, { type: "room_enter", room: 1, data: { room: 1 } });
     } catch { setStartError(true); }
   };
-  return <main id="main-content" data-assessment-id={assessmentId} className="min-h-screen bg-he-bg px-6 py-16 text-he-text">
+  return <main id="main-content" data-assessment-id={assessmentId} className="min-h-screen bg-he-bg px-6 pt-16 pb-6 text-he-text">
     <p className="mb-6 text-center text-sm text-he-muted lg:hidden">{t(locale, "laptopNotice")}</p>
     {hydration.error ? <AssessmentState state="error" locale={locale} onRetry={() => void hydration.retry()} />
       : status === "loading" || !hydration.hydrated ? <AssessmentState state="loading" locale={locale} />
