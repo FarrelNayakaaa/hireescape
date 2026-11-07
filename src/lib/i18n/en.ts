@@ -14,7 +14,7 @@ export const en = {
   inquisitorRule: "The Inquisitor will ask about your own code. It never gives answers.",
   aiOnRule: "You may use the built-in assistant. We look at how you use it, not whether you use it.",
   aiOffRule: "The built-in assistant is off for this assessment. Please work without AI tools.",
-  browserSignals: "Browser activity signals are enabled for this assessment.",
+  browserSignals: "Browser activity checks are configured for this assessment.",
   mediaSignals: "Camera and microphone checks require your explicit consent before use.",
   understand: "I understand",
   start: "Start assessment",
@@ -74,6 +74,19 @@ export const en = {
   editorEmpty: "No session code is available yet.",
   dismissIntro: "Continue",
   skipIntro: "Press any key to continue",
+  startError: "Your session could not start. Please try again.",
+  runTests: "Run tests",
+  check: "Check ✦",
+  checkDeferred: "Questions will be available in a later update.",
+  codeSealed: "Your Room 2 code is sealed for the defence.",
+  recordedResults: "Recorded results — run again to refresh individual test details.",
+  testExecutionError: "Tests could not finish. Please run them again.",
+  testsChanged: "Your code has changed since these results. Run the tests again to check it.",
+  defencePending: "Room 3 is open. Defence questions will be available in a later update.",
+  sessionEscaped: "You escaped",
+  sessionTimeout: "Time’s up — your work so far is saved.",
+  sessionEnded: "This session has ended",
+  sessionSaved: "Your session is saved in this browser for a human reviewer.",
 } as const;
 
 export type TranslationKey = keyof typeof en;

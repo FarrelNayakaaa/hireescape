@@ -1,13 +1,40 @@
+"use client";
+
+import { useState } from "react";
+import { useAssessmentBundle } from "@/features/assessment";
+import { findActiveSession, useSessionStore } from "@/features/session";
 import { t } from "@/lib/i18n";
+import { useSessionHydration } from "../hooks/useSessionHydration";
 import { AssessmentState } from "./AssessmentState";
+import { RulesScreen } from "./RulesScreen";
+import { RoomWorkspace } from "./RoomWorkspace";
 
 export function EscapeRoomShell({ assessmentId }: { assessmentId: string }) {
-  // TODO(H5b): load this assessmentId through useAssessmentBundle from the assessment
-  // public index once Dev A ships it. Map its loading/ready/not_found states here,
-  // hydrate sessions before deriving flow, then compose RulesScreen or the room UI.
-  // H5a is also absent: do not fabricate assessment data or import starter secrets.
+  const { status, bundle } = useAssessmentBundle(assessmentId);
+  const hydration = useSessionHydration();
+  const sessions = useSessionStore((state) => state.sessions);
+  const [startError, setStartError] = useState(false);
+  const session = Object.values(sessions).filter((item) => item.assessmentId === assessmentId)
+    .sort((a, b) => Number(Boolean(a.endedAt)) - Number(Boolean(b.endedAt)) || b.startedAt.localeCompare(a.startedAt))[0];
+  const locale = bundle?.assessment.locale ?? "en";
+  const start = () => {
+    if (!bundle) return;
+    const active = findActiveSession(assessmentId);
+    if (active?.events.some((event) => event.type === "rules_ack")) return;
+    try {
+      const store = useSessionStore.getState();
+      const id = active?.id ?? store.start(bundle.assessment, bundle.challenge);
+      store.record(id, { type: "rules_ack", room: 0, data: {} });
+      store.record(id, { type: "room_enter", room: 1, data: { room: 1 } });
+    } catch { setStartError(true); }
+  };
   return <main id="main-content" data-assessment-id={assessmentId} className="min-h-screen bg-he-bg px-6 py-16 text-he-text">
-    <p className="mb-6 text-center text-sm text-he-muted lg:hidden">{t("en", "laptopNotice")}</p>
-    <AssessmentState state="unavailable" />
+    <p className="mb-6 text-center text-sm text-he-muted lg:hidden">{t(locale, "laptopNotice")}</p>
+    {hydration.error ? <AssessmentState state="error" locale={locale} onRetry={() => void hydration.retry()} />
+      : status === "loading" || !hydration.hydrated ? <AssessmentState state="loading" locale={locale} />
+      : !bundle ? <AssessmentState state="not_found" locale={locale} />
+      : session && (session.endedAt || session.events.some((event) => event.type === "rules_ack")) ? <RoomWorkspace key={session.id} assessment={bundle.assessment} challenge={bundle.challenge} session={session} />
+      : <>{startError && <p role="alert" className="mb-4 text-center text-he-red">{t(locale, "startError")}</p>}
+        <RulesScreen assessment={bundle.assessment} title={bundle.challenge.title} onStart={start} /></>}
   </main>;
 }
