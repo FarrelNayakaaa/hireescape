@@ -3,7 +3,6 @@ import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, expect, it, vi } from "vitest";
 import type { AssessmentConfig, RunResult } from "@/lib/contracts";
 import { AssessmentState } from "../components/AssessmentState";
-import { EscapeRoomShell } from "../components/EscapeRoomShell";
 import { RulesScreen } from "../components/RulesScreen";
 import { RoomHeader } from "../components/RoomHeader";
 import { RoomNavigation } from "../components/RoomNavigation";
@@ -81,7 +80,7 @@ it("shows event-derived door states and an unstarted timer without starting a se
   expect(screen.getByText("AI Assistance: ON")).toBeInTheDocument();
 });
 
-it("renders loading, error/retry, not-found, and the honest unavailable route", () => {
+it("renders loading, error/retry, and not-found states", () => {
   const retry = vi.fn();
   const { rerender } = render(<AssessmentState state="loading" />);
   expect(screen.getByRole("status")).toHaveTextContent(/Opening/);
@@ -90,8 +89,6 @@ it("renders loading, error/retry, not-found, and the honest unavailable route", 
   expect(retry).toHaveBeenCalledOnce();
   rerender(<AssessmentState state="not_found" />);
   expect(screen.getByRole("heading", { name: "Assessment not found" })).toBeInTheDocument();
-  rerender(<EscapeRoomShell assessmentId="fictional-id" />);
-  expect(screen.getByText("This assessment is not ready to open")).toBeInTheDocument();
   expect(screen.getByRole("link", { name: "Back to manager" })).toHaveAttribute("href", "/manager");
   expect(screen.queryByRole("button", { name: "Start assessment" })).not.toBeInTheDocument();
 });
@@ -99,4 +96,14 @@ it("renders loading, error/retry, not-found, and the honest unavailable route", 
 it("shows an empty editor state without creating a session", () => {
   render(<EditorPane sessionId="not-a-real-session" />);
   expect(screen.getByText("No session code is available yet.")).toBeInTheDocument();
+});
+
+it("restores recorded hidden counts without claiming the tests have never run", () => {
+  render(<RightPanel room={2} aiAssistance title="INC-FIXTURE" brief="" recorded={{
+    visible: { passed: 2, total: 2 }, hidden: { passed: 3, total: 6, failedNames: ["fallback"] },
+    timedOut: false, runtimeError: null, codeHash: "fixture",
+  }} />);
+  fireEvent.click(screen.getByRole("tab", { name: "Tests" }));
+  expect(screen.getByRole("tabpanel")).toHaveTextContent("3/6 hidden tests pass");
+  expect(screen.queryByText("Hidden tests have not run yet.")).not.toBeInTheDocument();
 });

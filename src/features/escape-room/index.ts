@@ -5,5 +5,7 @@ export { RoomHeader } from "./components/RoomHeader";
 export { RoomNavigation } from "./components/RoomNavigation";
 export { RightPanel } from "./components/RightPanel";
 export { EditorPane } from "./components/EditorPane";
+export { RoomWorkspace } from "./components/RoomWorkspace";
+export { RunBar } from "./components/RunBar";
 export { deriveFlow, roomUiReducer, initialRoomUiState } from "./lib/flow";
 export type { Phase, FlowState, PanelTab, RoomUiState, RoomUiAction } from "./lib/flow";

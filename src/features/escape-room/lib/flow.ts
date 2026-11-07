@@ -6,11 +6,12 @@ export type FlowState = {
   room: Room | 0;
   completedRooms: Room[];
   startedAtMs: number | null;
+  room3Entered: boolean;
 };
 
 export function deriveFlow(events: SessionEvent[] | null, assessment: AssessmentConfig | null | undefined,
   options: { startedAt?: string; consentDeclined?: boolean } = {}): FlowState {
-  const flow: FlowState = { phase: "rules", room: 0, completedRooms: [], startedAtMs: null };
+  const flow: FlowState = { phase: "rules", room: 0, completedRooms: [], startedAtMs: null, room3Entered: false };
   if (assessment === undefined) return { ...flow, phase: "loading" };
   if (assessment === null) return { ...flow, phase: "not_found" };
   if (assessment.proctoring.required && options.consentDeclined) return { ...flow, phase: "blocked" };
@@ -34,6 +35,7 @@ export function deriveFlow(events: SessionEvent[] | null, assessment: Assessment
         flow.phase = flow.room === 2 ? "room2" : "room3";
       }
     }
+    if (event.type === "room_enter" && event.data?.room === 3 && flow.completedRooms.includes(2)) flow.room3Entered = true;
     if (event.type === "session_end") {
       if (event.data?.reason === "escaped") flow.phase = "escaped";
       if (event.data?.reason === "timeout") flow.phase = "timeout";
