@@ -40,3 +40,26 @@ it("supports useAnalysis(session) through the public assessment API and matching
  const session=fixtureSession();await useAssessmentStore.persist.rehydrate();useAssessmentStore.setState({challenges:{[challenge.id]:challenge},assessments:{[session.assessmentId]:{id:session.assessmentId,challengeId:challenge.id,candidateAlias:"Candidate A — Rani (fictional)",level:"mid",aiAssistance:true,durationMin:45,proctoring:{mode:"browser",required:false,captureSnapshots:false},locale:"en",createdAt:session.startedAt,token:"signed"}}});
  localStorage.setItem("he:secrets",JSON.stringify({state:{secrets:{[challenge.id]:secret}},version:0}));const {result}=renderHook(()=>useAnalysis(session));await act(async()=>{await result.current.generate();});expect(result.current.report?.droppedClaims).toBe(1);
 });
+
+it("reads a restored report when reopening analysis after a manager import",async()=>{
+ const session=fixtureSession();
+ const first=renderHook(()=>useAnalysis(session,{challenge,secret}));
+ await act(async()=>{await first.result.current.generate();});
+ const report=first.result.current.report!;
+ first.unmount();
+ // Imports replace persisted reports while this already-hydrated store remains in memory.
+ const restored={...report,generatedAt:"2026-11-08T00:00:00.000Z"};
+ localStorage.setItem("he:reports",JSON.stringify({state:{reports:{[session.id]:restored}},version:0}));
+ const reopened=renderHook(()=>useAnalysis(session));
+ await waitFor(()=>expect(reopened.result.current.report?.generatedAt).toBe(restored.generatedAt));
+ expect(fetch).toHaveBeenCalledOnce();
+});
+
+it("never repeats a model's invented runtime summary for a session with zero tests",async()=>{
+ const session=fixtureSession();session.events=session.events.filter(event=>event.type!=="test_run");
+ const {result}=renderHook(()=>useAnalysis(session,{challenge,secret}));
+ await act(async()=>{await result.current.generate();});
+ expect(result.current.report?.summary).toContain("The session recorded 0 test runs.");
+ expect(result.current.report?.summary).toContain("No hidden-test result was recorded.");
+ expect(result.current.report?.summary).not.toContain(fixture.summary);
+});

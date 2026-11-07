@@ -3,7 +3,8 @@ import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-libra
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import fixture from "@/lib/codex/fixtures/analyst.json";
 import { useSessionStore } from "@/features/session";
-import { AssessmentList, useAssessmentStore } from "@/features/assessment";
+import { useAssessmentStore } from "@/features/assessment";
+import { AssessmentList } from "@/features/assessment/manager/index";
 import { useReportStore } from "@/features/analyst";
 import { useDecisionStore } from "../decisionStore";
 import { ReportPage } from "../components/ReportPage";
@@ -39,6 +40,18 @@ it("keeps objective and timeline visible if analysis is unavailable",async()=>{
 });
 it("labels AI-off evidence without zero percentages and greys the unassessed AI tile",async()=>{
  const session=await seed(false);render(<ReportPage sessionId={session.id}/>);await screen.findByRole("heading",{name:"Competency map"});expect(screen.getAllByText("AI assistance was off").length).toBeGreaterThan(0);expect(screen.getByText("Not assessed").closest(".he-card")).toHaveClass("text-he-muted");expect(screen.queryByText("0%")).not.toBeInTheDocument();
+});
+it("renders a timeout session with zero test runs without inventing an executed result",async()=>{
+ const session=await seed(false);
+ session.events=session.events.filter(event=>event.type!=="test_run");
+ session.endReason="timeout";
+ useSessionStore.setState({sessions:{[session.id]:session}});
+ render(<ReportPage sessionId={session.id}/>);
+ expect(await screen.findByText("No executed result")).toBeInTheDocument();
+ expect(screen.getByRole("heading",{name:"Objective"})).toBeInTheDocument();
+ expect(screen.getByRole("list",{name:"Session timeline"})).toBeInTheDocument();
+ expect(screen.queryByText(/all passing/)).not.toBeInTheDocument();
+ expect(fetch).not.toHaveBeenCalled();
 });
 it("shows a friendly state for unknown sessions",async()=>{render(<ReportPage sessionId="unknown"/>);expect(await screen.findByRole("heading",{name:"Session not found"})).toBeInTheDocument();expect(screen.getByRole("link",{name:"Back to manager"})).toHaveAttribute("href","/manager");});
 it("always displays the removed count and labels predicted claims",()=>{render(<ClaimList claims={[{id:"c1",dimension:"design",signal:"observation",statement:"Possible runtime behaviour",evidence:[{kind:"event",eventId:"e3",quote:"cache"}],basis:"ai_predicted"}]} droppedClaims={1} events={fixtureSession().events} onEvidence={vi.fn()}/>);expect(screen.getByText("1 claims shown · 1 unverifiable claim removed")).toBeInTheDocument();expect(screen.getByText("AI-predicted, not executed")).toBeInTheDocument();});
