@@ -10,5 +10,5 @@ export function ObjectiveStrip({objective,session}:{objective:ObjectiveMetrics;s
   ["AI line share",share(objective.aiLineShare)],["AI-edited share",share(objective.aiEditedShare)],
   ["Diffs reviewed before apply",session.aiAssistance?`${review.reviewed} of ${review.total}`:"AI assistance was off"],["Paste count",String(objective.pasteCount)],
  ];
- return <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">{cards.map(([label,value])=><AccentCard key={label}><h3 className="he-small he-muted mb-3">{label}</h3><p className="he-mono text-lg break-words mb-4">{value}</p><BasisLabel basis="executed"/></AccentCard>)}</div>;
+ return <div data-report-objective className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">{cards.map(([label,value])=><AccentCard key={label}><h3 className="he-small he-muted mb-3">{label}</h3><p className="he-mono text-lg break-words mb-4">{value}</p><BasisLabel basis="executed"/></AccentCard>)}</div>;
 }
