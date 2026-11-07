@@ -1,7 +1,7 @@
 "use client";
 import { z } from "zod";
 import type { IntegrityRecord, Report, Session } from "@/lib/contracts";
-import { importSessions } from "@/features/session";
+import { exportSessions, importSessions } from "@/features/session";
 import { assessmentSchema, challengeSchema, secretSchema } from "../schemas";
 import { hydrateManagerStores, useAssessmentStore, useSecretStore } from "../store";
 
@@ -24,7 +24,7 @@ function readCollection<T>(key:string,field:string,schema:z.ZodType<T>):T[] {
  return z.array(schema).parse(Array.isArray(items)?items:Object.values(z.record(z.string(),schema).parse(items)));
 }
 function writeCollection<T>(key:string,field:string,items:T[],id:(item:T)=>string) {localStorage.setItem(key,JSON.stringify({state:{[field]:Object.fromEntries(items.map(item=>[id(item),item]))},version:0}));}
-export async function exportAll({getSessions,includeSnapshots=false}:{getSessions:()=>Session[];includeSnapshots?:boolean}):Promise<AssessmentBackup> {
+export async function exportAll({getSessions=exportSessions,includeSnapshots=false}:{getSessions?:()=>Session[];includeSnapshots?:boolean}={}):Promise<AssessmentBackup> {
  await hydrateManagerStores();
  const state=useAssessmentStore.getState();
  const integrity=readCollection("he:integrity","records",integritySchema).map(record=>({...record,signals:record.signals.map(item=>{if(includeSnapshots)return item;const {snapshot,...rest}=item;void snapshot;return rest;})}));
