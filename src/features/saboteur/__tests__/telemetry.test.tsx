@@ -4,7 +4,7 @@ import { afterEach, expect, it, vi } from "vitest";
 import fixture from "@/lib/codex/fixtures/saboteur.json";
 import { useAgentConsole } from "@/lib/codex/agentConsole";
 import { useGenerateChallenge } from "../hooks/useGenerateChallenge";
-import { AssessmentList } from "@/features/assessment";
+import { AssessmentList } from "@/features/assessment/manager/index";
 import { SaboteurPanel } from "../components/SaboteurPanel";
 vi.mock("next/navigation",()=>({useRouter:()=>({push:vi.fn()})}));
 vi.mock("@/components/ui/environment",()=>({useUiMotion:()=>({duration:0,decorative:false})}));
