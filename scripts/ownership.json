@@ -1,0 +1,91 @@
+{
+  "version": 1,
+  "baseBranch": "origin/main",
+  "readOnly": [
+    "starter-kit/**"
+  ],
+  "shared": [
+    "docs/**",
+    "CODEX_LOG.md",
+    "README.md",
+    "AGENTS.md",
+    "ARCHITECTURE.md"
+  ],
+  "devs": {
+    "A": {
+      "name": "Dev A (Manager & Platform)",
+      "allow": [
+        "package.json",
+        "pnpm-lock.yaml",
+        "pnpm-workspace.yaml",
+        ".npmrc",
+        ".gitignore",
+        ".env.example",
+        "tsconfig.json",
+        "next.config.*",
+        "next-env.d.ts",
+        "eslint.config.*",
+        "postcss.config.*",
+        "tailwind.config.*",
+        "vitest.config.*",
+        "vitest.setup.*",
+        ".github/**",
+        "public/**",
+        "scripts/**",
+        "test/**",
+        "src/app/*.tsx",
+        "src/app/*.ts",
+        "src/app/*.css",
+        "src/app/*.ico",
+        "src/app/AGENTS.md",
+        "src/app/manager/**",
+        "src/app/report/**",
+        "src/app/api/saboteur/**",
+        "src/app/api/analyst/**",
+        "src/app/api/assessment/**",
+        "src/app/api/health/**",
+        "src/lib/*.ts",
+        "src/lib/__tests__/**",
+        "src/types/**",
+        "src/lib/codex/**",
+        "src/components/ui/**",
+        "src/features/saboteur/**",
+        "src/features/assessment/**",
+        "src/features/analyst/**",
+        "src/features/report/**",
+        "challenges/**"
+      ],
+      "deny": [
+        "src/lib/codex/prompts/inquisitor.ts",
+        "src/lib/codex/prompts/assistant.ts",
+        "src/lib/codex/fixtures/inquisitor.json",
+        "src/lib/codex/fixtures/assistant.json"
+      ]
+    },
+    "B": {
+      "name": "Dev B (Candidate Experience)",
+      "allow": [
+        "src/app/play/**",
+        "src/app/api/inquisitor/**",
+        "src/app/api/assistant/**",
+        "src/lib/hooks/**",
+        "src/lib/i18n/**",
+        "src/lib/codex/prompts/inquisitor.ts",
+        "src/lib/codex/prompts/assistant.ts",
+        "src/lib/codex/fixtures/inquisitor.json",
+        "src/lib/codex/fixtures/assistant.json",
+        "src/components/game/**",
+        "src/features/runner/**",
+        "src/features/session/**",
+        "src/features/escape-room/**",
+        "src/features/inquisitor/**",
+        "src/features/assistant/**",
+        "src/features/proctoring/**"
+      ],
+      "deny": [],
+      "appendOnly": [
+        "src/lib/contracts.ts"
+      ]
+    }
+  }
+}
