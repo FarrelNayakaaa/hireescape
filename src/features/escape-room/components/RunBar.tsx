@@ -24,6 +24,6 @@ export function RunBar({ room, running, unlocked, hidden, recorded, onRun, onCon
         emptyLabel={t(locale, "hiddenPending")} openLabel={t(locale, "vaultOpen")}
         statusLabels={{ pass: t(locale, "pass"), fail: t(locale, "fail"), error: t(locale, "error") }} />
     </div>
-    <RoomNavigation room={room} unlocked={room === 1 || unlocked} onContinue={running ? undefined : onContinue} locale={locale} />
+    {room !== 1 && <RoomNavigation room={room} unlocked={unlocked} onContinue={running ? undefined : onContinue} locale={locale} />}
   </footer>;
 }
