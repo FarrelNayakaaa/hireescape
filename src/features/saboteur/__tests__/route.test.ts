@@ -1,0 +1,11 @@
+import { beforeEach, expect, it, vi } from "vitest";
+import { callStructured, CodexError } from "@/lib/codex/client";
+import { toErrorResponse } from "@/lib/http";
+import fixture from "@/lib/codex/fixtures/saboteur.json";
+import { POST, maxDuration, runtime } from "@/app/api/saboteur/route";
+vi.mock("@/lib/codex/client",async(importOriginal)=>({...await importOriginal<typeof import("@/lib/codex/client")>(),callStructured:vi.fn()}));
+const input={level:"mid",defectType:"cache_no_fallback",domainHint:null,previousFailures:[]};
+beforeEach(()=>{vi.mocked(callStructured).mockReset();});
+it("uses the shared client with a 50s timeout and no retries",async()=>{const meta={role:"saboteur" as const,model:"mock",promptVersion:"saboteur@2",latencyMs:700,attempts:1,mock:true};vi.mocked(callStructured).mockResolvedValue({data:fixture,meta});const response=await POST(new Request("http://localhost/api/saboteur",{method:"POST",body:JSON.stringify(input)}));expect(await response.json()).toEqual({output:fixture,meta});expect(callStructured).toHaveBeenCalledWith(expect.objectContaining({role:"saboteur",timeoutMs:50000,retries:0,mockFixture:fixture}));expect(runtime).toBe("nodejs");expect(maxDuration).toBe(60);});
+it.each(["{",JSON.stringify({...input,domainHint:"x".repeat(61)}),JSON.stringify({...input,previousFailures:Array(11).fill("failure")}),JSON.stringify({...input,defectType:"other"})])("rejects malformed requests",async body=>{const response=await POST(new Request("http://localhost/api/saboteur",{method:"POST",body}));expect(response.status).toBe(400);expect(callStructured).not.toHaveBeenCalled();});
+it("sanitizes model failures",async()=>{const error = new CodexError("upstream","private credential details");expect(toErrorResponse(error).status).toBe(502);vi.mocked(callStructured).mockImplementation(async()=>{throw error;});const response=await POST(new Request("http://localhost/api/saboteur",{method:"POST",body:JSON.stringify(input)}));expect(response.status).toBe(502);const body=await response.json();expect(body).toEqual({error:{code:"upstream",message:"The model service is unavailable."}});});
