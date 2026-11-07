@@ -46,3 +46,19 @@ describe("H5b assessment bundle", () => {
     expect(useSecretStore.getState().secrets).toEqual({});
   });
 });
+
+it("keeps the bundle loading until asynchronous public hydration completes", async () => {
+  const { act } = await import("@testing-library/react");
+  const store = useAssessmentStore.persist;
+  const original = store.getOptions().storage;
+  let finish!: (value: null) => void;
+  const loaded = new Promise<null>((resolve) => { finish = resolve; });
+  store.setOptions({ storage: { getItem: () => loaded, setItem: () => {}, removeItem: () => {} } });
+  try {
+    const hydration = store.rehydrate();
+    const { result } = renderHook(() => useAssessmentBundle("missing"));
+    expect(result.current.status).toBe("loading");
+    await act(async () => { finish(null); await hydration; });
+    await waitFor(() => expect(result.current.status).toBe("not_found"));
+  } finally { store.setOptions({ storage: original }); }
+});
