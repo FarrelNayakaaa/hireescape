@@ -1,0 +1,12 @@
+node_modules/
+.next/
+out/
+coverage/
+next-env.d.ts
+*.tsbuildinfo
+.env
+.env*.local
+.vercel/
+.DS_Store
+# copied by `postinstall` (scripts/copy-mediapipe.mjs); the .tflite model next to it IS committed
+public/mediapipe/wasm/
