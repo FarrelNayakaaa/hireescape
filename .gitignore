@@ -11,3 +11,6 @@ next-env.d.ts
 # copied by `postinstall` (scripts/copy-mediapipe.mjs); the .tflite model next to it IS committed
 public/mediapipe/wasm/
 .pnpm-store/
+docs/
+.vercel
+.env*

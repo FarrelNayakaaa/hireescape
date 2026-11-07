@@ -38,3 +38,19 @@ it("preserves newer challenge data and its paired secret, including unreferenced
  await importAll(backup);
  expect(getAssessmentBundle(id)?.challenge.title).toBe("Newer seed");expect(useSecretStore.getState().secrets[challenge.id].referenceFix).toBe("newer paired fix");expect(useAssessmentStore.getState().challenges["orphan-seed"]).toBeDefined();
 });
+
+it("shows a recoverable malformed-file error in the manager UI without replacing saved data",async()=>{
+ const { cleanup, fireEvent, render, screen }=await import("@testing-library/react");
+ const { createElement }=await import("react");
+ const { ExportImportMenu }=await import("../components/ExportImportMenu");
+ const id=await createDemoAssessment();const before=getAssessmentBundle(id);
+ try {
+  render(createElement(ExportImportMenu));
+  const file=new File(['{"version":1,"assessments":"broken"}'],"malformed.json",{type:"application/json"});
+  Object.defineProperty(file,"text",{value:async()=>'{"version":1,"assessments":"broken"}'});
+  fireEvent.change(screen.getByLabelText("Import JSON"),{target:{files:[file]}});
+  expect(await screen.findByRole("alert")).toHaveTextContent("Backup is invalid or storage is unavailable");
+  expect(screen.getByRole("button",{name:"Export all"})).toBeEnabled();
+  expect(getAssessmentBundle(id)).toEqual(before);
+ } finally { cleanup(); }
+});

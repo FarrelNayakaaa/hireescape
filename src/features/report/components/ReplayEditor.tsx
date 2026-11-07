@@ -29,5 +29,5 @@ export function ReplayEditor({code,origins,showOrigin,highlightLine}:{code:strin
  },[environment.theme]);
  useEffect(()=>{decorate();});
  useEffect(()=>()=>{decorations.current?.clear();editor.current=null;},[]);
- return <Editor language="javascript" theme="hireescape-replay" value={code} onMount={onMount} height="440px" loading={<p role="status">Loading bundled read-only editor…</p>} options={{readOnly:true,domReadOnly:true,minimap:{enabled:false},fontFamily:"var(--font-mono), monospace",fontSize:14,automaticLayout:true,scrollBeyondLastLine:false,wordWrap:"on",contextmenu:false,quickSuggestions:false,suggestOnTriggerCharacters:false,wordBasedSuggestions:"off",ariaLabel:"Read-only snapshot code"}}/>;
+ return <Editor language="javascript" theme="hireescape-replay" value={code} onMount={onMount} height="440px" loading={<p role="status">Loading bundled read-only editor…</p>} options={{readOnly:true,domReadOnly:true,minimap:{enabled:false},fontFamily:"var(--font-mono), monospace",fontSize:14,automaticLayout:true,scrollBeyondLastLine:false,wordWrap:"on",contextmenu:false,quickSuggestions:false,suggestOnTriggerCharacters:false,wordBasedSuggestions:"off",scrollbar:{vertical:environment.reducedMotion?"visible":"auto",horizontal:environment.reducedMotion?"visible":"auto"},ariaLabel:"Read-only snapshot code"}}/>;
 }

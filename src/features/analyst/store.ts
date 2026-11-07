@@ -19,10 +19,10 @@ export const useReportStore=create<ReportState>()(persist(set=>({reports:{},cach
  merge:(saved,current)=>{const parsed=persistedSchema.safeParse(saved);return parsed.success?{...current,...parsed.data,cache:parsed.data.cache??{}}:current;},
 }));
 let hydration:Promise<void>|undefined;
-export function hydrateReports():Promise<void>{
- if(useReportStore.persist.hasHydrated())return Promise.resolve();
+export function hydrateReports(refresh=false):Promise<void>{
+ if(!refresh&&useReportStore.persist.hasHydrated())return Promise.resolve();
  hydration??=Promise.resolve(useReportStore.persist.rehydrate()).finally(()=>{hydration=undefined;});return hydration;
 }
 const subscribe=(notify:()=>void)=>{const a=useReportStore.persist.onHydrate(notify),b=useReportStore.persist.onFinishHydration(notify);return()=>{a();b();};};
-export function useReportHydration(){const ready=useSyncExternalStore(subscribe,useReportStore.persist.hasHydrated,()=>false);useEffect(()=>{void hydrateReports();},[]);return ready;}
+export function useReportHydration(){const ready=useSyncExternalStore(subscribe,useReportStore.persist.hasHydrated,()=>false);useEffect(()=>{void hydrateReports(true);},[]);return ready;}
 export function getReportPersistenceWarning(){return persistenceWarning;}

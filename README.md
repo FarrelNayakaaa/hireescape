@@ -75,3 +75,13 @@ node starter-kit/validate-seeded.mjs    # works today: all 8 seeded challenges m
 integrity-signal folding, and all eight seeded challenges (hidden tests fail on the bug and pass on the fix).
 The TypeScript in `starter-kit/codex/` was written against the OpenAI Responses API but could **not** be executed offline:
 run `/api/health/codex` in the first hour.
+
+## Deployed demo and A9 QA
+
+Production: **https://hireescape.vercel.app** · Fictional backup report: **https://hireescape.vercel.app/report/demo**.
+
+Open the backup report once and wait for **“Offline backup ready”** before disconnecting. It then supports reload and reopening in the same browser profile without the network. Only the fictional report and public assets are cached; assessment/session data and API responses are excluded.
+
+A9 verified the deployed live manager → three rooms → evidence-report flow, mock mode, invalid-key fallbacks, storage recovery, malformed imports, AI-off enforcement, timeout/zero-test reports, two themes at 1280×800 and 1920×1080, reduced motion, and offline reload. Typecheck, lint, 429 tests, seeded validations, production build, ownership checks, and the candidate-bundle scan passed. Three opt-in tests remain skipped and lint retains two existing script warnings.
+
+The A9 deployment above was verified before the newer proctoring implementation arrived on `main`. This integrated branch now includes that implementation and the other recent main changes; this merge task does not redeploy the production URL. Media permissions and calibration still require presenting-device verification. Session-specific report links require matching browser data or an imported backup.
