@@ -1,4 +1,7 @@
 import type { NextConfig } from "next";
+import { createRequire } from "node:module";
+
+const require = createRequire(import.meta.url);
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
@@ -10,7 +13,8 @@ const nextConfig: NextConfig = {
   },
   turbopack: {
     rules: {
-      "*.css": { loaders: ["@tailwindcss/turbopack"], as: "*.css" },
+      // Resolve pnpm's symlink to the installed file before passing it to the dev loader worker.
+      "*.css": { loaders: [require.resolve("@tailwindcss/turbopack")], as: "*.css" },
     },
   },
 };
