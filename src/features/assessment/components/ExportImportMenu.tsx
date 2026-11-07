@@ -1,0 +1,11 @@
+"use client";
+import { useState } from "react";
+import { exportSessions } from "@/features/session";
+import { Button } from "@/components/ui";
+import { exportAll, importAll } from "../lib/exportImport";
+export function ExportImportMenu(){
+ const [snapshots,setSnapshots]=useState(false);const [state,setState]=useState<{status:"idle"|"loading"|"success"|"error";message:string}>({status:"idle",message:""});
+ async function download(){setState({status:"loading",message:""});try{const data=await exportAll({getSessions:exportSessions,includeSnapshots:snapshots});const url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:"application/json"}));const a=document.createElement("a");a.href=url;a.download="hireescape-backup.json";a.click();setTimeout(()=>URL.revokeObjectURL(url),0);setState({status:"success",message:"Backup exported. It contains manager-side reference fixes; keep it private."});}catch{setState({status:"error",message:"Backup could not be exported. Existing data was kept. Check browser storage and try again."});}}
+ async function upload(file:File|undefined){if(!file)return;setState({status:"loading",message:""});try{await importAll(await file.text());setState({status:"success",message:"Backup imported. Newer existing records were preserved."});}catch{setState({status:"error",message:"Backup is invalid or storage is unavailable. Choose a valid HireEscape version 1 backup."});}}
+ return <section aria-label="Backup" className="space-y-3"><div className="flex flex-wrap gap-3 items-center"><Button variant="secondary" loading={state.status==="loading"} onClick={()=>void download()}>Export all</Button><label className="he-chip cursor-pointer">Import JSON<input aria-label="Import JSON" type="file" accept="application/json,.json" disabled={state.status==="loading"} className="max-w-60 text-sm ml-3" onChange={e=>{void upload(e.target.files?.[0]);e.target.value="";}}/></label></div><label className="flex items-center gap-2 he-small"><input type="checkbox" checked={snapshots} onChange={e=>setSnapshots(e.target.checked)}/>Include integrity snapshots in export</label><p className="he-small he-muted">Backups include reference fixes and session evidence. Share only with the manager.</p><p role={state.status==="error"?"alert":"status"} className="he-small">{state.message}</p></section>;
+}
