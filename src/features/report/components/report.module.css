@@ -1,0 +1,4 @@
+.row { scroll-margin-top: 32px; transition: background-color 150ms, border-color 150ms; overflow-wrap: anywhere; }
+.row[data-highlighted="true"], .codeLine[data-highlighted="true"] { border-color: var(--he-blue); background: var(--he-surface-2); }
+.codeLine { scroll-margin-top: 32px; min-width: max-content; border-left: 2px solid transparent; transition: background-color 150ms; }
+@media print { .row { break-inside: avoid; } }
