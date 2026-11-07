@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import type { ReactNode } from "react";
 import { ToastViewport } from "@/components/ui";
+import { PlatformShell } from "@/components/ui/PlatformShell";
+import { themeBootstrap } from "@/components/ui/theme";
 import "./globals.css";
 
 const openSans = localFont({
@@ -39,12 +41,15 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html
       lang="en"
       data-theme="default"
+      suppressHydrationWarning
       className={`${openSans.variable} ${jetBrainsMono.variable} ${blockBlueprint.variable}`}
     >
+      <head><script dangerouslySetInnerHTML={{ __html: themeBootstrap }} /></head>
       <body>
-        <a className="skip-link" href="#main-content">Skip to content</a>
-        {children}
-        <ToastViewport />
+        <PlatformShell>
+          {children}
+          <ToastViewport />
+        </PlatformShell>
       </body>
     </html>
   );

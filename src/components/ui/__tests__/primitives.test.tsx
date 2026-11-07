@@ -2,7 +2,7 @@
 import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, expect, test, vi } from "vitest";
 import { AccentCard, AgentAvatar, AgentChip, AiModeBadge, BasisLabel, Button, EvidenceChip, GridBackdrop, NeonArcs, NumberBadge, PillTitle, StepList } from "../index";
-import { setTheme } from "../environment";
+import { ReportMotionContext, setTheme } from "../environment";
 import { mockBrowser } from "./browser";
 
 beforeEach(() => { mockBrowser(); localStorage.clear(); });
@@ -108,4 +108,11 @@ test("live OS preference changes stop loops, and Retro suppresses them too", () 
   act(() => setTheme("retro"));
   expect(container.querySelector(".he-agent-ring")).toHaveAttribute("data-motion", "static");
   act(() => setTheme("default"));
+});
+
+test("report context prevents decorative loops regardless of the OS preference", () => {
+  mockBrowser();
+  const { container } = render(<ReportMotionContext value><AgentAvatar agent="analyst" state="thinking" /><NeonArcs position="top-right" /></ReportMotionContext>);
+  expect(container.querySelector(".he-agent-ring")).toHaveAttribute("data-motion", "static");
+  expect(container.querySelector(".he-neon-arcs")).toHaveAttribute("data-motion", "static");
 });

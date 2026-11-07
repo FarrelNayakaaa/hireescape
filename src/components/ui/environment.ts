@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useSyncExternalStore } from "react";
 import { useReducedMotion } from "framer-motion";
+import { readStoredTheme } from "./theme";
 
 export type Theme = "default" | "retro";
 export const viewportQuery = "(min-width: 768px)";
@@ -23,7 +24,7 @@ function initialize() {
   const motion = window.matchMedia?.(motionQuery);
   let theme = snapshot.theme;
   if (!snapshot.ready) {
-    try { theme = localStorage.getItem("he-theme") === "retro" ? "retro" : "default"; } catch { /* Storage is optional; the in-memory choice remains usable. */ }
+    theme = readStoredTheme(() => localStorage.getItem("he-theme"));
   }
   document.documentElement.dataset.theme = theme;
   const update = () => {
