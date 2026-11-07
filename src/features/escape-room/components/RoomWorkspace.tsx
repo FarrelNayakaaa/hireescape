@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useReducer, useRef, useState } from "react";
 import type { AssessmentConfig, Challenge, Room, Session } from "@/lib/contracts";
 import { getSession, useSessionStore, type EditorRecorder } from "@/features/session";
+import { AssistantPanel, useAssistant } from "@/features/assistant";
 import { InquisitorPanel, useInquisitor } from "@/features/inquisitor";
 import { AccentCard, Button } from "@/components/ui";
 import { DoorOpenTransition, RoomIntroCard } from "@/components/game";
@@ -39,8 +40,11 @@ export function RoomWorkspace({ assessment, challenge, session }: { assessment: 
   const run = useRoomTests(session.id, challenge, room);
   const editorBridge = useRef<EditorRecorder | null>(null);
   const editorReady = useCallback((bridge: EditorRecorder | null) => { editorBridge.current = bridge; }, []);
+  const [assistantTyping, setAssistantTyping] = useState(false);
+  const getRecorder = useCallback(() => editorBridge.current, []);
+  const assistant = useAssistant({ assessment, challenge, session, room, disabled: unlocked || run.status === "running" || timer.expired, getRecorder });
   const getEditor = useCallback(() => editorBridge.current?.getEditor() ?? null, []);
-  const inquisitor = useInquisitor({ assessment, challenge, session, room, testing: run.status === "running" || timer.expired, getEditor });
+  const inquisitor = useInquisitor({ assessment, challenge, session, room, testing: run.status === "running" || timer.expired, assistantTyping: assistantTyping && ui.activeTab === "assistant" && room === 2, getEditor });
   const executeRun = run.run;
   const recorded = lastRunSummary(session);
   const hash = run.codeHash ?? recorded?.codeHash;
@@ -121,6 +125,7 @@ export function RoomWorkspace({ assessment, challenge, session }: { assessment: 
       <EditorPane sessionId={session.id} readOnly={unlocked || room === 3 || timer.expired} locale={locale} markedRange={room === 1 ? marked : null} revealRange={assisted && session.finalCode === challenge.starterCode ? challenge.defectLines : null} onMarkLine={room === 1 ? markLine : undefined} showDiff={room === 3 && showDiff} starterCode={challenge.starterCode} onReady={editorReady} />
       <RightPanel room={room} aiAssistance={assessment.aiAssistance} title={challenge.title} brief={challenge.brief}
         visible={run.visible} hidden={run.hidden} running={run.status === "running"} recorded={recorded}
+        assistantPanel={<AssistantPanel session={session} assessment={assessment} room={room} assistant={assistant} onTyping={setAssistantTyping} />}
         inquisitorPanel={<InquisitorPanel session={session} thinking={inquisitor.thinking} meta={inquisitor.meta} onLine={inquisitor.focusLine} />} lastQuestionId={inquisitor.questions.at(-1)?.id}
         activeTab={ui.activeTab} onTabChange={(tab) => dispatch({ type: "select_tab", tab })} locale={locale} />
     </div>

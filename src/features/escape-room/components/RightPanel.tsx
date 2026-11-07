@@ -12,10 +12,10 @@ import { initialRoomUiState, roomUiReducer, type PanelTab } from "../lib/flow";
 
 const tabs: PanelTab[] = ["brief", "tests", "inquisitor", "assistant"];
 
-export function RightPanel({ room, aiAssistance, title, brief, visible = null, hidden = null, running = false, recorded = null, activeTab: controlledTab, onTabChange, inquisitorPanel, lastQuestionId, locale = "en" }: {
+export function RightPanel({ room, aiAssistance, title, brief, visible = null, hidden = null, running = false, recorded = null, activeTab: controlledTab, onTabChange, assistantPanel, inquisitorPanel, lastQuestionId, locale = "en" }: {
   room: Room; aiAssistance: boolean; title: string; brief: string;
   visible?: RunResult | null; hidden?: RunResult | null; running?: boolean; locale?: AssessmentConfig["locale"];
-  inquisitorPanel?: ReactNode; lastQuestionId?: string;
+  assistantPanel?: ReactNode; inquisitorPanel?: ReactNode; lastQuestionId?: string;
   recorded?: EventDataMap["test_run"] | null; activeTab?: PanelTab; onTabChange?: (tab: PanelTab) => void;
 }) {
   const [ui, dispatch] = useReducer(roomUiReducer, initialRoomUiState);
@@ -60,7 +60,8 @@ export function RightPanel({ room, aiAssistance, title, brief, visible = null, h
           statusLabels={{ pass: t(locale, "pass"), fail: t(locale, "fail"), error: t(locale, "error") }} />
       </>}
       {activeTab === "inquisitor" && !reason && inquisitorPanel}
-      {(activeTab === "assistant" || (activeTab === "inquisitor" && (reason || !inquisitorPanel))) && <p className="rounded-lg border border-he-border p-5 text-sm leading-6 text-he-muted">{t(locale, reason ?? "agentsComing")}</p>}
+      {activeTab === "assistant" && assistantPanel}
+      {((activeTab === "assistant" && !assistantPanel) || (activeTab === "inquisitor" && (reason || !inquisitorPanel))) && <p className="rounded-lg border border-he-border p-5 text-sm leading-6 text-he-muted">{t(locale, reason ?? "agentsComing")}</p>}
     </div>
   </aside>;
 }

@@ -1,0 +1,13 @@
+{
+  "messageOnly": {
+    "message": "Trace how a rejected cache read reaches the caller, and compare that behavior with the incident brief. Which dependency needs to remain authoritative?",
+    "suggestion": null
+  },
+  "demoFix": {
+    "message": "The cache is best-effort. This version preserves database failures while continuing to the repository when cache reads or writes fail.",
+    "suggestion": {
+      "summary": "Fall back to the repository on cache failures",
+      "code": "// productService.js\nfunction createProductService({ cache, repo, logger }) {\n  const TTL_SECONDS = 60;\n\n  function cacheKey(id) {\n    return `product:${id}`;\n  }\n\n  async function getProduct(id) {\n    if (!id) {\n      throw new Error(\"id is required\");\n    }\n\n    let cached = null;\n    try {\n      cached = await cache.get(cacheKey(id));\n    } catch (err) {\n      logger.warn(\"cache.get failed, falling back to repo\", { id, error: err.message });\n    }\n    if (cached) {\n      return { ...cached, source: \"cache\" };\n    }\n\n    const product = await repo.findById(id);\n    if (!product) {\n      return null;\n    }\n\n    try {\n      await cache.set(cacheKey(id), product, TTL_SECONDS);\n    } catch (err) {\n      logger.warn(\"cache.set failed\", { id, error: err.message });\n    }\n    return { ...product, source: \"db\" };\n  }\n\n  return { getProduct };\n}\n\nmodule.exports = { createProductService };\n"
+    }
+  }
+}
