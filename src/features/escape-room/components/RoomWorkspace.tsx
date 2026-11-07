@@ -1,8 +1,9 @@
 "use client";
 
-import { useCallback, useEffect, useReducer, useState } from "react";
+import { useCallback, useEffect, useReducer, useRef, useState } from "react";
 import type { AssessmentConfig, Challenge, Room, Session } from "@/lib/contracts";
-import { getSession, useSessionStore } from "@/features/session";
+import { getSession, useSessionStore, type EditorRecorder } from "@/features/session";
+import { InquisitorPanel, useInquisitor } from "@/features/inquisitor";
 import { AccentCard, Button } from "@/components/ui";
 import { DoorOpenTransition, RoomIntroCard } from "@/components/game";
 import { t } from "@/lib/i18n";
@@ -36,6 +37,10 @@ export function RoomWorkspace({ assessment, challenge, session }: { assessment: 
   const unlocked = flow.completedRooms.includes(2);
   const [ui, dispatch] = useReducer(roomUiReducer, initialRoomUiState);
   const run = useRoomTests(session.id, challenge, room);
+  const editorBridge = useRef<EditorRecorder | null>(null);
+  const editorReady = useCallback((bridge: EditorRecorder | null) => { editorBridge.current = bridge; }, []);
+  const getEditor = useCallback(() => editorBridge.current?.getEditor() ?? null, []);
+  const inquisitor = useInquisitor({ assessment, challenge, session, room, testing: run.status === "running" || timer.expired, getEditor });
   const executeRun = run.run;
   const recorded = lastRunSummary(session);
   const hash = run.codeHash ?? recorded?.codeHash;
@@ -113,12 +118,14 @@ export function RoomWorkspace({ assessment, challenge, session }: { assessment: 
     {run.status === "error" && <p role="alert" className="text-he-red">{t(locale, "testExecutionError")}</p>}
     {stale && <p role="status" className="text-he-yellow">{t(locale, "testsChanged")}</p>}
     <div className="grid min-w-0 gap-4 xl:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
-      <EditorPane sessionId={session.id} readOnly={unlocked || room === 3 || timer.expired} locale={locale} markedRange={room === 1 ? marked : null} revealRange={assisted && session.finalCode === challenge.starterCode ? challenge.defectLines : null} onMarkLine={room === 1 ? markLine : undefined} showDiff={room === 3 && showDiff} starterCode={challenge.starterCode} />
+      <EditorPane sessionId={session.id} readOnly={unlocked || room === 3 || timer.expired} locale={locale} markedRange={room === 1 ? marked : null} revealRange={assisted && session.finalCode === challenge.starterCode ? challenge.defectLines : null} onMarkLine={room === 1 ? markLine : undefined} showDiff={room === 3 && showDiff} starterCode={challenge.starterCode} onReady={editorReady} />
       <RightPanel room={room} aiAssistance={assessment.aiAssistance} title={challenge.title} brief={challenge.brief}
         visible={run.visible} hidden={run.hidden} running={run.status === "running"} recorded={recorded}
+        inquisitorPanel={<InquisitorPanel session={session} thinking={inquisitor.thinking} meta={inquisitor.meta} onLine={inquisitor.focusLine} />} lastQuestionId={inquisitor.questions.at(-1)?.id}
         activeTab={ui.activeTab} onTabChange={(tab) => dispatch({ type: "select_tab", tab })} locale={locale} />
     </div>
     <RunBar room={room} running={run.status === "running" || timer.expired} unlocked={unlocked} hidden={run.hidden} recorded={recorded}
+      onCheck={() => { dispatch({ type: "select_tab", tab: "inquisitor" }); void inquisitor.check(); }} checking={inquisitor.thinking} checkLimit={inquisitor.atLimit}
       onRun={runTests} onContinue={room < 3 ? next : undefined} locale={locale} />
   </div>;
 }

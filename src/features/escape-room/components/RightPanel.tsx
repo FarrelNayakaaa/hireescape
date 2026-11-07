@@ -1,6 +1,7 @@
 "use client";
 
-import { useId, useReducer } from "react";
+import { useId, useReducer, type ReactNode } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import { LockKeyhole } from "lucide-react";
 import type { AssessmentConfig, EventDataMap, Room, RunResult } from "@/lib/contracts";
 import { HiddenTestLocks, IncidentTicket } from "@/components/game";
@@ -11,13 +12,15 @@ import { initialRoomUiState, roomUiReducer, type PanelTab } from "../lib/flow";
 
 const tabs: PanelTab[] = ["brief", "tests", "inquisitor", "assistant"];
 
-export function RightPanel({ room, aiAssistance, title, brief, visible = null, hidden = null, running = false, recorded = null, activeTab: controlledTab, onTabChange, locale = "en" }: {
+export function RightPanel({ room, aiAssistance, title, brief, visible = null, hidden = null, running = false, recorded = null, activeTab: controlledTab, onTabChange, inquisitorPanel, lastQuestionId, locale = "en" }: {
   room: Room; aiAssistance: boolean; title: string; brief: string;
   visible?: RunResult | null; hidden?: RunResult | null; running?: boolean; locale?: AssessmentConfig["locale"];
+  inquisitorPanel?: ReactNode; lastQuestionId?: string;
   recorded?: EventDataMap["test_run"] | null; activeTab?: PanelTab; onTabChange?: (tab: PanelTab) => void;
 }) {
   const [ui, dispatch] = useReducer(roomUiReducer, initialRoomUiState);
   const prefix = useId();
+  const reducedMotion = useReducedMotion();
   const activeTab = controlledTab ?? ui.activeTab;
   const select = (tab: PanelTab) => { dispatch({ type: "select_tab", tab }); onTabChange?.(tab); };
   const assistantReason = !aiAssistance ? "aiDisabled" : room === 1 ? "aiRoom1" : room === 3 ? "aiRoom3" : null;
@@ -37,7 +40,7 @@ export function RightPanel({ room, aiAssistance, title, brief, visible = null, h
             document.getElementById(`${prefix}-${next}`)?.focus();
           }}
           className={`inline-flex min-h-10 items-center gap-1 rounded-lg px-3 text-sm ${activeTab === tab ? "bg-he-surface-2 text-he-text" : "text-he-muted"}`}>
-          {locked && <LockKeyhole size={12} aria-hidden="true" />}{t(locale, tab)}
+          {locked && <LockKeyhole size={12} aria-hidden="true" />}<motion.span key={tab === "inquisitor" ? lastQuestionId : tab} animate={tab === "inquisitor" && lastQuestionId && !reducedMotion ? { opacity: [1, 0.35, 1, 0.35, 1] } : { opacity: 1 }} transition={{ duration: 1.2 }}>{t(locale, tab)}</motion.span>
         </Button>;
       })}
     </div>
@@ -56,7 +59,8 @@ export function RightPanel({ room, aiAssistance, title, brief, visible = null, h
           emptyLabel={t(locale, "hiddenPending")} openLabel={t(locale, "vaultOpen")}
           statusLabels={{ pass: t(locale, "pass"), fail: t(locale, "fail"), error: t(locale, "error") }} />
       </>}
-      {(activeTab === "assistant" || activeTab === "inquisitor") && <p className="rounded-lg border border-he-border p-5 text-sm leading-6 text-he-muted">{t(locale, reason ?? "agentsComing")}</p>}
+      {activeTab === "inquisitor" && !reason && inquisitorPanel}
+      {(activeTab === "assistant" || (activeTab === "inquisitor" && (reason || !inquisitorPanel))) && <p className="rounded-lg border border-he-border p-5 text-sm leading-6 text-he-muted">{t(locale, reason ?? "agentsComing")}</p>}
     </div>
   </aside>;
 }
