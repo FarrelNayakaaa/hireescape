@@ -3,6 +3,7 @@ import { ArrowRight, ArrowUpRight, Check, Code2, FileCheck2, ShieldCheck, X } fr
 import { AccentCard, AgentAvatar, BasisLabel, buttonStyles, EvidenceChip, GridBackdrop, NeonArcs, NumberBadge, PillTitle, type Accent } from "@/components/ui";
 import type { CodexRole } from "@/lib/contracts";
 import { ReadableText } from "@/components/ui/ReadableText";
+import { LandingMascots } from "@/components/ui/LandingMascots";
 
 const rooms: { n: number; accent: Accent; title: string; description: string; detail: string }[] = [
   { n: 1, accent: "room1", title: "Triage", description: "Find where it breaks.", detail: "Read the incident. Mark the fault. Build a hypothesis." },
@@ -32,6 +33,7 @@ export default function Home() {
     <main id="main-content">
       <section className="he-hero" aria-labelledby="he-hero-title">
         <GridBackdrop /><NeonArcs position="top-right" /><NeonArcs position="bottom-left" />
+        <LandingMascots />
         <div className="he-page-width he-hero-content">
           <p className="he-eyebrow"><span className="he-status-dot" aria-hidden="true" />Evidence-backed technical screening</p>
           <PillTitle className="he-hero-title">HireEscape</PillTitle>
